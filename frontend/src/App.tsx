@@ -7,6 +7,7 @@ import { AppRoutes } from './pages/AppRoutes';
 
 export const App = () => {
   const dispatch = useAppDispatch();
+  console.log('backend url:', process.env.REACT_APP_BACKEND_URL);
 
   useEffect(() => {
     dispatch(updateToken());

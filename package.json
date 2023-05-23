@@ -11,6 +11,10 @@
     "install:backend": "yarn workspace backend install",
     "install:frontend": "yarn workspace frontend install",
 
+    "build": "npm-run-all --parallel build:backend build:frontend",
+    "build:backend": "yarn workspace backend run build",
+    "build:frontend": "yarn workspace frontend run build",
+
     "start": "npm-run-all --parallel start:backend start:frontend",
     "start:backend": "yarn workspace backend run start",
     "start:frontend": "yarn workspace frontend run start",

@@ -14,10 +14,11 @@ import { disciplineTeacherRouter } from './routes/disciplineTeacher/disciplineTe
 import { taskRouter } from './routes/task/taskRouter';
 import { resultRouter } from './routes/result/resultRouter';
 import { APP_PORT } from './constants';
+import { corsOptions } from './configs/cors';
 
 const app = express();
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/teachers', teacherRouter);
 app.use('/admins', adminRouter);
