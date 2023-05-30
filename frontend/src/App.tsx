@@ -11,6 +11,9 @@ export const App = () => {
 
   useEffect(() => {
     dispatch(updateToken());
+    fetch(process.env.REACT_APP_BACKEND_URL || '', { method: 'GET' })
+      .then(result => console.log('result', result))
+      .catch(error => console.error(error));
   }, []);
 
   const role = useAppSelector((state) => state.user.role);

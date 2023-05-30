@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 
 import { AppDataSource } from "./configs/typeorm.config";
@@ -18,8 +18,11 @@ import { corsOptions } from './configs/cors';
 
 const app = express();
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello there');
+})
 app.use('/teachers', teacherRouter);
 app.use('/admins', adminRouter);
 app.use('/sign-in', signInRouter);
@@ -45,3 +48,5 @@ const main = async () => {
 };
 
 main();
+
+export default app;
