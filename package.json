@@ -23,7 +23,7 @@
     "start:dev:backend": "yarn workspace backend run start:dev",
     "start:dev:frontend": "yarn workspace frontend run start:dev",
 
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "heroku-postbuild": "if [ \"$BUILD_ENV\" = \"wp-msmrl-backend\" ]; then yarn workspace backend build; elif [ \"$BUILD_ENV\" = \"wp-msmrl-frontend\" ]; then yarn workspace frontend build; else echo no environment detected, please set BUILD_ENV; fi"
   },
   "workspaces": [
     "backend",
