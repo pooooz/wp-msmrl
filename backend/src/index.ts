@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 
 import { AppDataSource } from "./configs/typeorm.config";
@@ -13,11 +13,12 @@ import { currentDisciplineRouter } from './routes/currentDiscipline/currentDisci
 import { disciplineTeacherRouter } from './routes/disciplineTeacher/disciplineTeacherRouter';
 import { taskRouter } from './routes/task/taskRouter';
 import { resultRouter } from './routes/result/resultRouter';
-import { APP_PORT } from './constants';
+import { PORT } from './constants';
+import { corsOptions } from './configs/cors';
 
 const app = express();
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/teachers', teacherRouter);
 app.use('/admins', adminRouter);
@@ -35,8 +36,8 @@ const main = async () => {
   try {
     await AppDataSource.initialize();
 
-    app.listen(APP_PORT, () => {
-      console.log(`Server start on port ${APP_PORT}`);
+    app.listen(PORT, () => {
+      console.log(`Server start on port ${PORT}`);
     });
   } catch (err) {
     console.log(err);
@@ -44,3 +45,5 @@ const main = async () => {
 };
 
 main();
+
+export default app;
