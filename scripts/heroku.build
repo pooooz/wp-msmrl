@@ -14,9 +14,9 @@ fi
 
   cd $PROJECT_ROOT
 
-  if [ "$BUILD_ENV" = "wp-msmrl-backend" ]; then
+  if [ "$BUILD_ENV" = "backend" ]; then
     yarn workspace backend build
-  elif [ "$BUILD_ENV" = "wp-msmrl-frontend" ]; then
+  elif [ "$BUILD_ENV" = "frontend" ]; then
     yarn workspace frontend build
   else
     echo "Error: no build config for INATO_BUILD_ENV value '$INATO_BUILD_ENV'"
