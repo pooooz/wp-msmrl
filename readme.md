@@ -13,7 +13,6 @@
 ## Для запуска приложения необходимо:
 
 1. Перейти в backend/src/configs/typeorm.config.ts
-2. Изменить настройки подключения к базе данных на собственные (host, port, username, password, database)
 3. Создать базу данных с такими же параметрами, как и установили в backend/src/configs/typeorm.config.ts
 4. Выполнить из корневой папки проекта (graduation_project) команду npm install
 5. Выполнить из корневой папки проекта (graduation_project) команду npm run start
