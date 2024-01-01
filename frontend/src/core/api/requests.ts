@@ -1,9 +1,10 @@
+import { LocalStorageItemsEnum } from '../constants/LocalStorageItemsEnum';
 
 const getAPIEndpoint = (url: string) => `${process.env.REACT_APP_BACKEND_URL}${url}`;
 
 export const GET = async (url: string) => {
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(LocalStorageItemsEnum.AccessToken);
     const response = await fetch(getAPIEndpoint(url), {
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +26,10 @@ export const GET = async (url: string) => {
 
 export const POST = async (url: string, body = {}) => {
   try {
-    const token = localStorage.getItem('token');
+    const token = url === '/refresh'
+      ? localStorage.getItem(LocalStorageItemsEnum.RefreshToken)
+      : localStorage.getItem(LocalStorageItemsEnum.AccessToken);
+
     const response = await fetch(getAPIEndpoint(url), {
       method: 'POST',
       headers: {
@@ -49,7 +53,7 @@ export const POST = async (url: string, body = {}) => {
 
 export const PATCH = async (url: string, body = {}) => {
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(LocalStorageItemsEnum.AccessToken);
     const response = await fetch(getAPIEndpoint(url), {
       method: 'PATCH',
       headers: {
@@ -73,7 +77,7 @@ export const PATCH = async (url: string, body = {}) => {
 
 export const DELETE = async (url: string) => {
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(LocalStorageItemsEnum.AccessToken);
     const response = await fetch(getAPIEndpoint(url), {
       method: 'DELETE',
       headers: {

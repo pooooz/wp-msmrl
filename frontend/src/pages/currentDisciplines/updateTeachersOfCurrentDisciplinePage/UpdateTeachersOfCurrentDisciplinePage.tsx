@@ -53,7 +53,7 @@ export const UpdateTeachersOfCurrentDisciplinePage = () => {
       form_of_conducting_classes,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button
               variant="outlined"
               color="error"
@@ -70,7 +70,7 @@ export const UpdateTeachersOfCurrentDisciplinePage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button
             variant="contained"

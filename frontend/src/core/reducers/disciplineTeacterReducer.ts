@@ -9,7 +9,7 @@ const initialState = {
       form_of_conducting_classes: '',
       current_discipline: {
         id: 0,
-        discipline: { id: 0, name: '', control_form: '' },
+        discipline: { id: 0, name: '', controlForm: '' },
         group: { id: 0, name: '', course: 0 }
       }
     }
@@ -73,7 +73,7 @@ export const disciplineTeacherSlice = createSlice({
       showToast(ResponseStatusEnum.OK, action.payload.message);
     },
 
-    actionFailid: (state, action) => {
+    actionFailed: (state, action) => {
       state.status = ResponseStatusEnum.ERROR;
       state.message = action.payload.message;
       state.isLoading = false;
@@ -91,7 +91,7 @@ export const {
   createDisciplineTeacherSuccess,
   deleteDisciplineTeacher,
   deleteDisciplineTeacherSuccess,
-  actionFailid
+  actionFailed
 } = disciplineTeacherSlice.actions;
 
 export default disciplineTeacherSlice.reducer;

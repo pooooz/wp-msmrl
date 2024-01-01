@@ -68,7 +68,7 @@ export const currentDisciplineSlice = createSlice({
       showToast(ResponseStatusEnum.OK, action.payload.message);
     },
 
-    actionFailid: (state, action) => {
+    actionFailed: (state, action) => {
       state.status = ResponseStatusEnum.ERROR;
       state.message = action.payload.message;
       state.isLoading = false;
@@ -86,7 +86,7 @@ export const {
   getCurrentDisciplinesByDisciplineIdSuccess,
   createCurrentDiscipline,
   createCurrentDisciplineSuccess,
-  actionFailid
+  actionFailed
 } = currentDisciplineSlice.actions;
 
 export default currentDisciplineSlice.reducer;

@@ -72,7 +72,7 @@ export const groupSlice = createSlice({
       showToast(ResponseStatusEnum.OK, action.payload.message);
     },
 
-    actionFailid: (state, action) => {
+    actionFailed: (state, action) => {
       state.status = ResponseStatusEnum.ERROR;
       state.message = action.payload.message;
       state.isLoading = false;
@@ -92,7 +92,7 @@ export const {
   updateGroupSuccess,
   deleteGroup,
   deleteGroupSuccess,
-  actionFailid
+  actionFailed
 } = groupSlice.actions;
 
 export default groupSlice.reducer;

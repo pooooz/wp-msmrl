@@ -44,12 +44,12 @@ export const AdminsPage = () => {
       last_name: admin.last_name,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button variant="outlined" color="warning" onClick={() => { handleUpdateAdmin(admin.id); }}>
               Update
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button variant="outlined" color="error" onClick={() => { handleDeleteAdmin(admin.id); }}>
               Delete
             </Button>
@@ -66,7 +66,7 @@ export const AdminsPage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button variant="contained" color="primary" sx={{ mt: 1 }} onClick={handleAddAdmin}>
             Add

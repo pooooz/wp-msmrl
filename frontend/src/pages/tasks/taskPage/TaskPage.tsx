@@ -56,7 +56,7 @@ export const TaskPage = () => {
         }),
         actions: (
           <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-            {checkPermissions([UserRoleEnum.TEACHER]) && (
+            {checkPermissions([UserRoleEnum.Teacher]) && (
               <Button
                 variant="outlined"
                 color="warning"
@@ -65,7 +65,7 @@ export const TaskPage = () => {
                 Update
               </Button>
             )}
-            {checkPermissions([UserRoleEnum.TEACHER]) && (
+            {checkPermissions([UserRoleEnum.Teacher]) && (
               <Button
                 variant="outlined"
                 color="error"
@@ -87,7 +87,7 @@ export const TaskPage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.TEACHER]) && (
+      {checkPermissions([UserRoleEnum.Teacher]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button variant="contained" color="primary" sx={{ mt: 1 }} onClick={handleAddResult}>
             Add

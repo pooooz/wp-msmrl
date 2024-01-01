@@ -55,12 +55,12 @@ export const StudentsPage = () => {
       lastName: student.last_name,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button variant="outlined" onClick={() => { handleOpenStudent(student.id); }}>
               Open
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button
               variant="outlined"
               color="warning"
@@ -69,7 +69,7 @@ export const StudentsPage = () => {
               Update
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button
               variant="outlined"
               color="error"
@@ -86,7 +86,7 @@ export const StudentsPage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button variant="contained" color="primary" sx={{ mt: 1 }} onClick={handleAddStudent}>
             Add

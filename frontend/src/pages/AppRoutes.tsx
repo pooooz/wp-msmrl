@@ -209,16 +209,16 @@ export const AppRoutes = () => {
 
   const { role, userId } = useMemo(
     () => ({
-      role: localStorage.getItem(LocalStorageItemsEnum.ROLE),
-      userId: localStorage.getItem(LocalStorageItemsEnum.USER_ID)
+      role: localStorage.getItem(LocalStorageItemsEnum.Role),
+      userId: localStorage.getItem(LocalStorageItemsEnum.UserId)
     }),
     [stateRole]
   );
 
   const routes = useMemo(() => {
-    if (role === UserRoleEnum.ADMIN) {
+    if (role === UserRoleEnum.Admin) {
       return adminRoutes;
-    } else if (role === UserRoleEnum.TEACHER) {
+    } else if (role === UserRoleEnum.Teacher) {
       return teacherRoutes.map((route) => {
         if (route.path === ANY_ROUTE) {
           const teacherFirstRoute = generatePath(TEACHER_ROUTE, {

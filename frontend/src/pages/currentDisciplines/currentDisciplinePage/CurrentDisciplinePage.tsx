@@ -54,17 +54,17 @@ export const CurrentDisciplinePage = () => {
       mandatory: task.mandatory ? 'Yes' : 'No',
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button variant="outlined" onClick={() => { handleOpenTask(task.id); }}>
               Open
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Teacher]) && (
             <Button variant="outlined" color="warning" onClick={() => { handleUpdateTask(task.id); }}>
               Update
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Teacher]) && (
             <Button variant="outlined" color="error" onClick={() => { handleDeleteTask(task.id); }}>
               Delete
             </Button>
@@ -81,7 +81,7 @@ export const CurrentDisciplinePage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.TEACHER]) && (
+      {checkPermissions([UserRoleEnum.Teacher]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button variant="contained" color="primary" sx={{ mt: 1 }} onClick={handleAddTask}>
             Add

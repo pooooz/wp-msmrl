@@ -63,7 +63,7 @@ export const DisciplinePage = () => {
       )),
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button
               variant="outlined"
               onClick={() => { handleUpdateCurrentDisciplineTeachers(currentDiscipline.id); }}
@@ -71,7 +71,7 @@ export const DisciplinePage = () => {
               Teachers
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button
               variant="outlined"
               onClick={() => { handleOpenCurrentDiscipline(currentDiscipline.id); }}
@@ -98,7 +98,7 @@ export const DisciplinePage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button
             variant="contained"
@@ -110,7 +110,7 @@ export const DisciplinePage = () => {
           </Button>
         </Stack>
       )}
-      {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+      {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button
             variant="contained"

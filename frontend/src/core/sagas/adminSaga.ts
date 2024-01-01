@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { DELETE, GET, PATCH, POST } from '../api/requests';
 import {
-  actionFailid,
+  actionFailed,
   createAdmin,
   createAdminSuccess,
   deleteAdmin,
@@ -21,7 +21,7 @@ function* getAllAdminsWorker() {
     const response: object[] = yield call(async () => await GET(ADMIN_BASE_URL));
     yield put(getAllAdminsSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -30,7 +30,7 @@ function* getAdminByIdWorker({ payload }: any) {
     const response: object = yield call(async () => await GET(`${ADMIN_BASE_URL}/${payload}`));
     yield put(getAdminByIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -39,7 +39,7 @@ function* createAdminWorker({ payload }: any) {
     const response: object = yield call(async () => await POST(ADMIN_BASE_URL, payload));
     yield put(createAdminSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -49,7 +49,7 @@ function* updateAdminWorker({ payload }: any) {
     const response: object = yield call(async () => await PATCH(`${ADMIN_BASE_URL}/${id}`, data));
     yield put(updateAdminSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -58,7 +58,7 @@ function* deleteAdminWorker({ payload }: any) {
     const response: object = yield call(async () => await DELETE(`${ADMIN_BASE_URL}/${payload}`));
     yield put(deleteAdminSuccess({ ...response, id: payload }));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 

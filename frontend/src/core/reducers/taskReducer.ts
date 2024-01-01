@@ -55,7 +55,7 @@ export const taskSlice = createSlice({
       showToast(ResponseStatusEnum.OK, action.payload.message);
     },
 
-    actionFailid: (state, action) => {
+    actionFailed: (state, action) => {
       state.status = ResponseStatusEnum.ERROR;
       state.message = action.payload.message;
       state.isLoading = false;
@@ -73,7 +73,7 @@ export const {
   updateTaskSuccess,
   deleteTask,
   deleteTaskSuccess,
-  actionFailid
+  actionFailed
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

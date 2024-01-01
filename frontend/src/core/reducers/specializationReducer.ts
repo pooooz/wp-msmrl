@@ -77,7 +77,7 @@ export const specializationSlice = createSlice({
       showToast(ResponseStatusEnum.OK, action.payload.message);
     },
 
-    actionFailid: (state, action) => {
+    actionFailed: (state, action) => {
       state.message = action.payload.message;
       state.status = ResponseStatusEnum.ERROR;
       state.isLoading = false;
@@ -97,7 +97,7 @@ export const {
   updateSpecializationSuccess,
   deleteSpecialization,
   deleteSpecializationSuccess,
-  actionFailid
+  actionFailed
 } = specializationSlice.actions;
 
 export default specializationSlice.reducer;

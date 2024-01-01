@@ -13,6 +13,8 @@ import { DatabaseLogger } from './database.logger';
 import { EventLoggerModule } from './event-logger/event-logger.module';
 
 import { EventLoggerService } from './event-logger/event-logger.service';
+import { DisciplinesModule } from './disciplines/disciplines.module';
+import { Discipline } from './disciplines/entities/discipline.entity';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { EventLoggerService } from './event-logger/event-logger.service';
       ) => {
         const postgresConfig = configService.get('postgres');
 
+        const entities = [User, Discipline];
+
         return {
           type: 'postgres',
           host: postgresConfig.host,
@@ -45,7 +49,7 @@ import { EventLoggerService } from './event-logger/event-logger.service';
           username: postgresConfig.username,
           password: postgresConfig.password,
           database: postgresConfig.database,
-          entities: [User],
+          entities,
           synchronize: true,
           logging: ['query', 'error'],
           logger: new DatabaseLogger(eventLoggerService),
@@ -54,6 +58,7 @@ import { EventLoggerService } from './event-logger/event-logger.service';
     }),
     UsersModule,
     AuthModule,
+    DisciplinesModule,
   ],
 })
 export class AppModule implements NestModule {
