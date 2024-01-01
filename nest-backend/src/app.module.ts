@@ -17,6 +17,8 @@ import { DisciplinesModule } from './disciplines/disciplines.module';
 import { Discipline } from './disciplines/entities/discipline.entity';
 import { AdminsModule } from './admins/admins.module';
 import { Admin } from './admins/entities/admin.entity';
+import { TeachersModule } from './teachers/teachers.module';
+import { Teacher } from './teachers/entities/teacher.entity';
 
 @Module({
   imports: [
@@ -42,7 +44,7 @@ import { Admin } from './admins/entities/admin.entity';
       ) => {
         const postgresConfig = configService.get('postgres');
 
-        const entities = [User, Discipline, Admin];
+        const entities = [User, Discipline, Admin, Teacher];
 
         return {
           type: 'postgres',
@@ -62,6 +64,7 @@ import { Admin } from './admins/entities/admin.entity';
     AuthModule,
     DisciplinesModule,
     AdminsModule,
+    TeachersModule,
   ],
 })
 export class AppModule implements NestModule {

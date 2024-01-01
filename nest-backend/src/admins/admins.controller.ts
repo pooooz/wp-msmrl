@@ -52,7 +52,7 @@ export class AdminsController {
     );
 
     if (alreadyExistingUser) {
-      throw new BadRequestException('Admin with this login already exists');
+      throw new BadRequestException('User with this login already exists');
     }
 
     await this.authService.signUp({
