@@ -39,6 +39,7 @@ export const AdminsPage = () => {
 
   const rows = useMemo(() => {
     return admins.map((admin) => ({
+      id: admin.id,
       firstName: admin.firstName,
       patronymic: admin.patronymic,
       lastName: admin.lastName,

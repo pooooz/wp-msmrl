@@ -50,6 +50,7 @@ export const GroupsPage = () => {
 
   const rows = useMemo(() => {
     return groups.map((group) => ({
+      id: group.id,
       name: group.name,
       course: group.course,
       specialization: group.specialization.name,

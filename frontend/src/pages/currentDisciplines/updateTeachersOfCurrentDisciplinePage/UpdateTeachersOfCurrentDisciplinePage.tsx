@@ -47,6 +47,7 @@ export const UpdateTeachersOfCurrentDisciplinePage = () => {
 
   const rows = useMemo(() => {
     return discipline_teachers.map(({ id, teacher, form_of_conducting_classes }) => ({
+      id: teacher.id,
       firstName: teacher.firstName,
       patronymic: teacher.patronymic,
       lastName: teacher.lastName,

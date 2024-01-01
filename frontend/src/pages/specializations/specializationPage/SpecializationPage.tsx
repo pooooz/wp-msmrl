@@ -45,6 +45,7 @@ export const SpecializationPage = () => {
 
   const rows = useMemo(() => {
     return specialization.groups.map((group) => ({
+      id: group.id,
       name: group.name,
       course: group.course,
       actions: (

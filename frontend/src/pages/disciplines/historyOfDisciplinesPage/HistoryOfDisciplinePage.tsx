@@ -27,6 +27,7 @@ export const HistoryOfDisciplinePage = () => {
   const rows = useMemo(() => {
     return currentDisciplines
       .map((currentDiscipline) => ({
+        id: currentDiscipline.id,
         group: currentDiscipline.group.name,
         year: currentDiscipline.year,
         teachers: currentDiscipline.discipline_teachers.map(({ teacher, form_of_conducting_classes }) => (

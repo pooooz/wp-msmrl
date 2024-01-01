@@ -7,6 +7,7 @@ import { AuthInputDto } from './dto/auth.dto';
 import { ACCESS_TOKEN_LIFETIME, REFRESH_TOKEN_LIFETIME } from './constants';
 import { UsersService } from '../users/users.service';
 import { UserRole } from '../common/contracts/enums/user-role.enum';
+import { CreateUserInputDto } from 'src/users/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -85,5 +86,24 @@ export class AuthService {
     }
 
     return this.generateTokens(user.id, user.role);
+  }
+
+  async signUp(createUserInputDto: CreateUserInputDto) {
+    const existingUserWithLogin = await this.usersService.findByLogin(
+      createUserInputDto.login,
+    );
+
+    if (existingUserWithLogin) {
+      throw new BadRequestException('User already exists');
+    }
+
+    const hashedPassword = await bcrypt.hash(createUserInputDto.password, 10);
+
+    const newUser = await this.usersService.create({
+      ...createUserInputDto,
+      password: hashedPassword,
+    });
+
+    return this.generateTokens(newUser.id, createUserInputDto.role);
   }
 }

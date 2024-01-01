@@ -41,6 +41,7 @@ export const GroupPage = () => {
 
   const rows = useMemo(() => {
     return group.students.map((student) => ({
+      id: student.id,
       firstName: student.firstName,
       patronymic: student.patronymic,
       lastName: student.lastName,

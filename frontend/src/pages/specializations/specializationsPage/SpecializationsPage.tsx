@@ -56,6 +56,7 @@ export const SpecializationsPage = () => {
 
   const rows = useMemo(() => {
     return specializations.map((specialization) => ({
+      id: specialization.id,
       name: specialization.name,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>

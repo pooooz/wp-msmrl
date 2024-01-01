@@ -23,6 +23,7 @@ import { UsersService } from 'src/users/users.service';
 import { UserRole } from 'src/common/contracts';
 import { UserRoleGuard } from 'src/common/guards/user-role.guard';
 import { RequiredUserRoles } from 'src/common/decorators/user-role.decorator';
+import { AuthService } from 'src/auth/auth.service';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -31,6 +32,7 @@ import { RequiredUserRoles } from 'src/common/decorators/user-role.decorator';
 @Controller('admins')
 export class AdminsController {
   constructor(
+    private readonly authService: AuthService,
     private readonly usersService: UsersService,
     private readonly adminsService: AdminsService,
   ) {}
@@ -53,10 +55,14 @@ export class AdminsController {
       throw new BadRequestException('Admin with this login already exists');
     }
 
-    const user = await this.usersService.create({
+    await this.authService.signUp({
       ...createAdminInputDto,
       role: UserRole.Admin,
     });
+
+    const user = await this.usersService.findByLogin(createAdminInputDto.login);
+
+    if (!user) throw new BadRequestException('User not created');
 
     return this.adminsService.create(createAdminInputDto, user);
   }

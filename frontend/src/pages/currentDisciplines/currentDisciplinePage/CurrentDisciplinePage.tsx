@@ -50,6 +50,7 @@ export const CurrentDisciplinePage = () => {
 
   const rows = useMemo(() => {
     return current_discipline.tasks.map((task) => ({
+      id: task.id,
       task: task.name,
       mandatory: task.mandatory ? 'Yes' : 'No',
       actions: (

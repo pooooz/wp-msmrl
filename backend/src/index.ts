@@ -21,7 +21,7 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/teachers', teacherRouter);
-app.use('/admins', adminRouter);
+app.use('/admins', adminRouter); // +
 app.use('/sign-in', signInRouter); // +
 app.use('/specializations', specializationRouter);
 app.use('/groups', groupRouter);
