@@ -13,9 +13,9 @@ import {
 import { ADD_TEACHER_TO_CURRENT_DISCIPLINE_ROUTE } from '../../AppRoutes';
 
 const columns: TableColumns = [
-  { id: 'last_name', label: 'Last Name' },
-  { id: 'first_name', label: 'first Name' },
-  { id: 'patronumic', label: 'Patronumic' },
+  { id: 'lastName', label: 'Last Name' },
+  { id: 'firstName', label: 'first Name' },
+  { id: 'patronymic', label: 'Patronumic' },
   { id: 'form_of_conducting_classes', label: 'Form Of Conducing Classes' },
   { id: 'actions', label: 'Actions' }
 ];
@@ -47,9 +47,9 @@ export const UpdateTeachersOfCurrentDisciplinePage = () => {
 
   const rows = useMemo(() => {
     return discipline_teachers.map(({ id, teacher, form_of_conducting_classes }) => ({
-      first_name: teacher.first_name,
-      patronumic: teacher.patronumic,
-      last_name: teacher.last_name,
+      firstName: teacher.firstName,
+      patronymic: teacher.patronymic,
+      lastName: teacher.lastName,
       form_of_conducting_classes,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>

@@ -30,9 +30,9 @@ export const HistoryOfDisciplinePage = () => {
         group: currentDiscipline.group.name,
         year: currentDiscipline.year,
         teachers: currentDiscipline.discipline_teachers.map(({ teacher, form_of_conducting_classes }) => (
-          <div key={`${teacher.first_name}${teacher.last_name}${teacher.patronumic}`}>
-            {`${teacher.first_name} ${
-              teacher.last_name
+          <div key={`${teacher.firstName}${teacher.lastName}${teacher.patronymic}`}>
+            {`${teacher.firstName} ${
+              teacher.lastName
             } (${form_of_conducting_classes.toUpperCase()})`}
             <br />
           </div>

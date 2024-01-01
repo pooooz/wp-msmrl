@@ -13,6 +13,8 @@ import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { DisciplinesModule } from './disciplines/disciplines.module';
 import { Discipline } from './disciplines/entities/discipline.entity';
+import { AdminsModule } from './admins/admins.module';
+import { Admin } from './admins/entities/admin.entity';
 
 const DEFAULT_PORT = 4000;
 
@@ -37,8 +39,8 @@ async function bootstrap() {
     .build();
 
   const options: SwaggerDocumentOptions = {
-    include: [UsersModule, AuthModule, DisciplinesModule],
-    extraModels: [User, Discipline],
+    include: [UsersModule, AuthModule, DisciplinesModule, AdminsModule],
+    extraModels: [User, Discipline, Admin],
     deepScanRoutes: true,
   };
 

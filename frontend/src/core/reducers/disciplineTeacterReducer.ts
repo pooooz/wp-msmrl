@@ -18,7 +18,7 @@ const initialState = {
     {
       id: 0,
       form_of_conducting_classes: '',
-      teacher: { id: 0, first_name: '', patronumic: '', last_name: '' }
+      teacher: { id: 0, firstName: '', patronymic: '', lastName: '' }
     }
   ],
   isLoading: false,

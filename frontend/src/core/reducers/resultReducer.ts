@@ -9,7 +9,7 @@ const initialState = {
       mark: 0,
       comment: '',
       date: '',
-      student: { id: 0, first_name: '', patronumic: '', last_name: '' }
+      student: { id: 0, firstName: '', patronymic: '', lastName: '' }
     }
   ],
 
@@ -31,7 +31,7 @@ const initialState = {
     mark: 0,
     comment: '',
     date: '',
-    student: { id: 0, first_name: '', patronumic: '', last_name: '' },
+    student: { id: 0, firstName: '', patronymic: '', lastName: '' },
     task: { id: 0, name: '', evaluation_scale: '', mandatory: true }
   },
   isLoading: false,

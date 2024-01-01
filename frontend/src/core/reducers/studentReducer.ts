@@ -3,8 +3,8 @@ import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
 
 const initialState = {
-  students: [{ id: 0, first_name: '', patronumic: '', last_name: '' }],
-  student: { id: 0, first_name: '', patronumic: '', last_name: '', group: { id: 0, name: '' } },
+  students: [{ id: 0, firstName: '', patronymic: '', lastName: '' }],
+  student: { id: 0, firstName: '', patronymic: '', lastName: '', group: { id: 0, name: '' } },
   isLoading: false,
   status: '',
   message: ''

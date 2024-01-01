@@ -48,7 +48,7 @@ export const UpdateResultPage = () => {
         value={student.id}
         key={student.id}
       >
-        {`${student.first_name} ${student.last_name}`}
+        {`${student.firstName} ${student.lastName}`}
       </MenuItem>
     ));
   }, [students]);

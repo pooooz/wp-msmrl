@@ -29,7 +29,7 @@ export const AddTeacherToCurrentDisciplinePage = () => {
         value={teacher.id}
         key={teacher.id}
       >
-        {`${teacher.first_name} ${teacher.last_name}`}
+        {`${teacher.firstName} ${teacher.lastName}`}
       </MenuItem>
     ));
   }, [teachers]);

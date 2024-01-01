@@ -22,11 +22,11 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/teachers', teacherRouter);
 app.use('/admins', adminRouter);
-app.use('/sign-in', signInRouter);
+app.use('/sign-in', signInRouter); // +
 app.use('/specializations', specializationRouter);
 app.use('/groups', groupRouter);
 app.use('/students', studentRouter);
-app.use('/disciplines', disciplineRouter);
+app.use('/disciplines', disciplineRouter); // +
 app.use('/currentDisciplines', currentDisciplineRouter);
 app.use('/disciplineTeachers', disciplineTeacherRouter);
 app.use('/tasks', taskRouter);

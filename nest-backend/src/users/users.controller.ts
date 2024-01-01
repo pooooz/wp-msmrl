@@ -7,8 +7,8 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserInputDto } from './dto/create-user.dto';
+import { UpdateUserInputDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import {
@@ -31,8 +31,8 @@ export class UsersController {
     description: 'User created',
     type: User,
   })
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
+  create(@Body() createUserInputDto: CreateUserInputDto): Promise<User> {
+    return this.usersService.create(createUserInputDto);
   }
 
   @Get()
@@ -58,8 +58,11 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(Number(id), updateUserDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateUserInputDto: UpdateUserInputDto,
+  ) {
+    return this.usersService.update(Number(id), updateUserInputDto);
   }
 
   @Delete(':id')

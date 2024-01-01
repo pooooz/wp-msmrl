@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserInputDto } from './dto/create-user.dto';
+import { UpdateUserInputDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsRelations, FindOptionsSelect, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -12,8 +12,8 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const user = this.userRepository.create(createUserDto);
+  async create(createUserInputDto: CreateUserInputDto) {
+    const user = this.userRepository.create(createUserInputDto);
     return this.userRepository.save(user);
   }
 
@@ -49,10 +49,10 @@ export class UsersService {
     });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserInputDto: UpdateUserInputDto) {
     return this.userRepository.save({
       id,
-      ...updateUserDto,
+      ...updateUserInputDto,
     });
   }
 

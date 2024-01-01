@@ -8,7 +8,7 @@ const initialState = {
     id: 0,
     name: '',
     course: 0,
-    students: [{ id: 0, first_name: '', patronumic: '', last_name: '' }],
+    students: [{ id: 0, firstName: '', patronymic: '', lastName: '' }],
     specialization: { id: 0, name: '' }
   },
   isLoading: false,

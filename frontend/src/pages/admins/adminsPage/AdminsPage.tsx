@@ -10,9 +10,9 @@ import { deleteAdmin, getAllAdmins } from '../../../core/reducers/adminReducer';
 import { ADD_ADMIN_ROUTE, UPDATE_ADMIN_ROUTE } from '../../AppRoutes';
 
 const columns: TableColumns = [
-  { id: 'last_name', label: 'Last Name' },
-  { id: 'first_name', label: 'First Name' },
-  { id: 'patronumic', label: 'Patronumic' },
+  { id: 'lastName', label: 'Last Name' },
+  { id: 'firstName', label: 'First Name' },
+  { id: 'patronymic', label: 'Patronumic' },
   { id: 'actions', label: 'Actions' }
 ];
 
@@ -39,9 +39,9 @@ export const AdminsPage = () => {
 
   const rows = useMemo(() => {
     return admins.map((admin) => ({
-      first_name: admin.first_name,
-      patronumic: admin.patronumic,
-      last_name: admin.last_name,
+      firstName: admin.firstName,
+      patronymic: admin.patronymic,
+      lastName: admin.lastName,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           {checkPermissions([UserRoleEnum.Admin]) && (

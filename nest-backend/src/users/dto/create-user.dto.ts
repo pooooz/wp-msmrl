@@ -2,7 +2,7 @@ import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRole } from 'src/common/contracts';
 
-export class CreateUserDto {
+export class CreateUserInputDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()

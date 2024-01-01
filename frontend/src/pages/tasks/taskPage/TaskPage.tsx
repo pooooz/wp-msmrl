@@ -44,7 +44,7 @@ export const TaskPage = () => {
   const rows = useMemo(() => {
     return results
       .map((result) => ({
-        student: `${result.student.last_name} ${result.student.first_name}`,
+        student: `${result.student.lastName} ${result.student.firstName}`,
         mark: result.mark,
         comment: result.comment,
         date: new Date(result.date).toLocaleDateString('ru-Ru', {

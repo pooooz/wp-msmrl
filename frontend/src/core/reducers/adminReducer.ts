@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
+import { ResponseMessagesEnum } from '../constants/responseMessages';
 
 const initialState = {
-  admins: [{ id: 0, first_name: '', patronumic: '', last_name: '' }],
-  admin: { id: 0, first_name: '', patronumic: '', last_name: '', user: { login: '' } },
+  admins: [{ id: 0, firstName: '', patronymic: '', lastName: '' }],
+  admin: { id: 0, firstName: '', patronymic: '', lastName: '', user: { login: '' } },
   isLoading: false,
   status: '',
   message: ''
@@ -19,7 +20,7 @@ export const adminSlice = createSlice({
     },
 
     getAllAdminsSuccess: (state, action) => {
-      state.admins = action.payload.admins;
+      state.admins = action.payload;
       state.isLoading = false;
     },
 
@@ -28,7 +29,7 @@ export const adminSlice = createSlice({
     },
 
     getAdminByIdSuccess: (state, action) => {
-      state.admin = action.payload.admin;
+      state.admin = action.payload;
       state.isLoading = false;
     },
 
@@ -38,9 +39,9 @@ export const adminSlice = createSlice({
 
     createAdminSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.ADMIN_CREATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.ADMIN_CREATED);
     },
 
     updateAdmin: (state, _) => {
@@ -49,9 +50,9 @@ export const adminSlice = createSlice({
 
     updateAdminSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.ADMIN_UPDATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.ADMIN_UPDATED);
     },
 
     deleteAdmin: (state, _) => {
@@ -60,10 +61,10 @@ export const adminSlice = createSlice({
 
     deleteAdminSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.ADMIN_REMOVED;
       state.admins = state.admins.filter((admin) => admin.id !== action.payload.id);
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.ADMIN_REMOVED);
     },
 
     actionFailed: (state, action) => {

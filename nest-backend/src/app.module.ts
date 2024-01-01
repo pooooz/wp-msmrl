@@ -15,6 +15,8 @@ import { EventLoggerModule } from './event-logger/event-logger.module';
 import { EventLoggerService } from './event-logger/event-logger.service';
 import { DisciplinesModule } from './disciplines/disciplines.module';
 import { Discipline } from './disciplines/entities/discipline.entity';
+import { AdminsModule } from './admins/admins.module';
+import { Admin } from './admins/entities/admin.entity';
 
 @Module({
   imports: [
@@ -40,7 +42,7 @@ import { Discipline } from './disciplines/entities/discipline.entity';
       ) => {
         const postgresConfig = configService.get('postgres');
 
-        const entities = [User, Discipline];
+        const entities = [User, Discipline, Admin];
 
         return {
           type: 'postgres',
@@ -59,6 +61,7 @@ import { Discipline } from './disciplines/entities/discipline.entity';
     UsersModule,
     AuthModule,
     DisciplinesModule,
+    AdminsModule,
   ],
 })
 export class AppModule implements NestModule {

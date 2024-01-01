@@ -10,9 +10,9 @@ import { deleteTeacher, getAllTeachers } from '../../../core/reducers/teacherRed
 import { ADD_TEACHER_ROUTE, TEACHER_ROUTE, UPDATE_TEACHER_ROUTE } from '../../AppRoutes';
 
 const columns: TableColumns = [
-  { id: 'last_name', label: 'Last Name' },
-  { id: 'first_name', label: 'First Name' },
-  { id: 'patronumic', label: 'Patronumic' },
+  { id: 'lastName', label: 'Last Name' },
+  { id: 'firstName', label: 'First Name' },
+  { id: 'patronymic', label: 'Patronumic' },
   { id: 'actions', label: 'Actions' }
 ];
 
@@ -46,9 +46,9 @@ export const TeachersPage = () => {
 
   const rows = useMemo(() => {
     return teachers.map((teacher) => ({
-      first_name: teacher.first_name,
-      patronumic: teacher.patronumic,
-      last_name: teacher.last_name,
+      firstName: teacher.firstName,
+      patronymic: teacher.patronymic,
+      lastName: teacher.lastName,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (

@@ -17,9 +17,9 @@ export const UpdateTeacherPage = () => {
 
   const [updatedTeacher, setUpdatedTeacher] = useState({
     id: 0,
-    first_name: '',
-    patronumic: '',
-    last_name: '',
+    firstName: '',
+    patronymic: '',
+    lastName: '',
     login: '',
     password: ''
   });
@@ -29,9 +29,9 @@ export const UpdateTeacherPage = () => {
       setUpdatedTeacher((prevState) => ({
         ...prevState,
         id: teacher.id,
-        first_name: teacher.first_name,
-        patronumic: teacher.patronumic,
-        last_name: teacher.last_name,
+        firstName: teacher.firstName,
+        patronymic: teacher.patronymic,
+        lastName: teacher.lastName,
         login: teacher.user.login,
         password: ''
       }));
@@ -62,8 +62,8 @@ export const UpdateTeacherPage = () => {
           required
           id="lastName"
           label="Last Name"
-          name="last_name"
-          value={updatedTeacher.last_name}
+          name="lastName"
+          value={updatedTeacher.lastName}
           onChange={handleChange}
         />
         <TextField
@@ -71,16 +71,16 @@ export const UpdateTeacherPage = () => {
           required
           id="firstName"
           label="First Name"
-          name="first_name"
-          value={updatedTeacher.first_name}
+          name="firstName"
+          value={updatedTeacher.firstName}
           onChange={handleChange}
         />
         <TextField
           margin="normal"
-          id="patronumic"
+          id="patronymic"
           label="Patronumic"
-          name="patronumic"
-          value={updatedTeacher.patronumic}
+          name="patronymic"
+          value={updatedTeacher.patronymic}
           onChange={handleChange}
         />
         <TextField

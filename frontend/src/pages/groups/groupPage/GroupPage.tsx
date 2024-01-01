@@ -12,7 +12,7 @@ import { ADD_STUDENT_ROUTE, STUDENT_ROUTE } from '../../AppRoutes';
 const columns: TableColumns = [
   { id: 'lastName', label: 'Last Name' },
   { id: 'firstName', label: 'First Name' },
-  { id: 'patronumic', label: 'Patronumic' },
+  { id: 'patronymic', label: 'Patronumic' },
   { id: 'actions', label: 'Actions' }
 ];
 
@@ -41,9 +41,9 @@ export const GroupPage = () => {
 
   const rows = useMemo(() => {
     return group.students.map((student) => ({
-      firstName: student.first_name,
-      patronumic: student.patronumic,
-      lastName: student.last_name,
+      firstName: student.firstName,
+      patronymic: student.patronymic,
+      lastName: student.lastName,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
