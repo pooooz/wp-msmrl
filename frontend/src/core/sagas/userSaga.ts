@@ -29,15 +29,15 @@ function* updateTokenWorker() {
 
 function* signInWorker({ payload }: any) {
   try {
-    const { token } = yield call(async () => await POST('/sign-in', payload));
+    const { accessToken } = yield call(async () => await POST('/sign-in', payload));
 
-    yield localStorage.setItem(LocalStorageItemsEnum.TOKEN, token);
+    yield localStorage.setItem(LocalStorageItemsEnum.TOKEN, accessToken);
 
-    const { role, user } = yield decode(token);
+    const { role, sub } = yield decode(accessToken);
 
     yield localStorage.setItem(LocalStorageItemsEnum.ROLE, role);
 
-    yield localStorage.setItem(LocalStorageItemsEnum.USER_ID, user.id);
+    yield localStorage.setItem(LocalStorageItemsEnum.USER_ID, sub);
 
     yield put(signInSuccess({ role }));
   } catch (err) {

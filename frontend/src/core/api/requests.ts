@@ -7,7 +7,7 @@ export const GET = async (url: string) => {
     const response = await fetch(getAPIEndpoint(url), {
       headers: {
         'Content-Type': 'application/json',
-        authorization: token || ''
+        authorization: `Bearer ${token || ''}`
       }
     });
 
@@ -30,7 +30,7 @@ export const POST = async (url: string, body = {}) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        authorization: token || ''
+        authorization: `Bearer ${token || ''}`
       },
       body: JSON.stringify(body)
     });
@@ -54,7 +54,7 @@ export const PATCH = async (url: string, body = {}) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        authorization: token || ''
+        authorization: `Bearer ${token || ''}`
       },
       body: JSON.stringify(body)
     });
@@ -78,7 +78,7 @@ export const DELETE = async (url: string) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        authorization: token || ''
+        authorization: `Bearer ${token || ''}`
       }
     });
     const data = await response.json();
