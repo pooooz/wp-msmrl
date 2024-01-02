@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
+import { ResponseMessagesEnum } from '../constants/responseMessages';
 
 const initialState = {
-  task: { id: NaN, name: '', mandatory: true, evaluation_scale: '' },
+  task: { id: NaN, name: '', mandatory: true, evaluationScale: '' },
   isLoading: false,
   status: '',
   message: ''
@@ -18,7 +19,7 @@ export const taskSlice = createSlice({
     },
 
     getTaskByIdSuccess: (state, action) => {
-      state.task = action.payload.task;
+      state.task = action.payload;
       state.isLoading = false;
     },
 
@@ -28,9 +29,9 @@ export const taskSlice = createSlice({
 
     createTaskSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.TASK_CREATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.TASK_CREATED);
     },
 
     updateTask: (state, _) => {
@@ -39,9 +40,9 @@ export const taskSlice = createSlice({
 
     updateTaskSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.TASK_UPDATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.TASK_UPDATED);
     },
 
     deleteTask: (state, _) => {
@@ -50,9 +51,9 @@ export const taskSlice = createSlice({
 
     deleteTaskSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.TASK_REMOVED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.TASK_REMOVED);
     },
 
     actionFailed: (state, action) => {

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { DisciplineControlForm } from 'src/common/contracts';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { CurrentDiscipline } from 'src/current-disciplines/entities/current-discipline.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Discipline {
@@ -28,4 +29,10 @@ export class Discipline {
     enum: DisciplineControlForm,
   })
   controlForm: DisciplineControlForm;
+
+  @OneToMany(
+    () => CurrentDiscipline,
+    (currentDiscipline) => currentDiscipline.discipline,
+  )
+  currentDisciplines: Array<CurrentDiscipline>;
 }

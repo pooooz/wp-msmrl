@@ -39,9 +39,9 @@ export const AddResultPage = () => {
   }, [students]);
 
   const dropdownMarkItems = useMemo(() => {
-    if (task.evaluation_scale === EvaluationScaleEnum.TEN_POINT) {
+    if (task.evaluationScale === EvaluationScaleEnum.TenPoint) {
       return tenPointMarks.map((mark) => <MenuItem value={mark} key={mark}>{mark}</MenuItem>);
-    } else if (task.evaluation_scale === EvaluationScaleEnum.CREDIT) {
+    } else if (task.evaluationScale === EvaluationScaleEnum.Credit) {
       return creditMarks.map((mark) => <MenuItem value={mark.value} key={mark.value}>{mark.title}</MenuItem>);
     }
   }, [task]);

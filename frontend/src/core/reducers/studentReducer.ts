@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
+import { ResponseMessagesEnum } from '../constants/responseMessages';
 
 const initialState = {
   students: [{ id: 0, firstName: '', patronymic: '', lastName: '' }],
@@ -19,7 +20,7 @@ export const studentSlice = createSlice({
     },
 
     getAllStudentsSuccess: (state, action) => {
-      state.students = action.payload.students;
+      state.students = action.payload;
       state.isLoading = false;
     },
 
@@ -28,7 +29,7 @@ export const studentSlice = createSlice({
     },
 
     getStudentByIdSuccess: (state, action) => {
-      state.student = action.payload.student;
+      state.student = action.payload;
       state.isLoading = false;
     },
 
@@ -37,7 +38,7 @@ export const studentSlice = createSlice({
     },
 
     getStudentsByTaskIdSuccess: (state, action) => {
-      state.students = action.payload.students;
+      state.students = action.payload;
       state.isLoading = false;
     },
 
@@ -47,9 +48,9 @@ export const studentSlice = createSlice({
 
     createStudentSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.STUDENT_CREATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.STUDENT_CREATED);
     },
 
     updateStudent: (state, _) => {
@@ -58,9 +59,9 @@ export const studentSlice = createSlice({
 
     updateStudentSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.STUDENT_UPDATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.STUDENT_UPDATED);
     },
 
     deleteStudent: (state, _) => {
@@ -69,10 +70,10 @@ export const studentSlice = createSlice({
 
     deleteStudentSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.response.message;
+      state.message = ResponseMessagesEnum.STUDENT_REMOVED;
       state.students = state.students.filter((student) => student.id !== action.payload.id);
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.STUDENT_REMOVED);
     },
 
     actionFailed: (state, action) => {

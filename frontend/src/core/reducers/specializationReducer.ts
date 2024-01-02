@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
+import { ResponseMessagesEnum } from '../constants/responseMessages';
 
 const initialState = {
   specializations: [
@@ -28,7 +29,7 @@ export const specializationSlice = createSlice({
     },
 
     getAllSpecializationsSuccess: (state, action) => {
-      state.specializations = action.payload.specializations;
+      state.specializations = action.payload;
       state.isLoading = false;
     },
 
@@ -37,7 +38,7 @@ export const specializationSlice = createSlice({
     },
 
     getSpecializationByIdSuccess: (state, action) => {
-      state.specialization = action.payload.specialization;
+      state.specialization = action.payload;
       state.isLoading = false;
     },
 
@@ -47,9 +48,9 @@ export const specializationSlice = createSlice({
 
     addSpecializationSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.SPECIALIZATION_CREATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.SPECIALIZATION_CREATED);
     },
 
     updateSpecialization: (state, _) => {
@@ -58,9 +59,9 @@ export const specializationSlice = createSlice({
 
     updateSpecializationSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.SPECIALIZATION_UPDATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.SPECIALIZATION_UPDATED);
     },
 
     deleteSpecialization: (state, _) => {
@@ -69,12 +70,12 @@ export const specializationSlice = createSlice({
 
     deleteSpecializationSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.response.message;
+      state.message = ResponseMessagesEnum.SPECIALIZATION_REMOVED;
       state.specializations = state.specializations.filter(
         (specialization) => specialization.id !== action.payload.id
       );
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.SPECIALIZATION_REMOVED);
     },
 
     actionFailed: (state, action) => {

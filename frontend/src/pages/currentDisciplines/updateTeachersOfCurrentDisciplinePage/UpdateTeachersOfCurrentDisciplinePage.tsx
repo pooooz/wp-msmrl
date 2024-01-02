@@ -16,7 +16,7 @@ const columns: TableColumns = [
   { id: 'lastName', label: 'Last Name' },
   { id: 'firstName', label: 'first Name' },
   { id: 'patronymic', label: 'Patronumic' },
-  { id: 'form_of_conducting_classes', label: 'Form Of Conducing Classes' },
+  { id: 'formOfConductingClasses', label: 'Form Of Conducing Classes' },
   { id: 'actions', label: 'Actions' }
 ];
 
@@ -30,8 +30,8 @@ export const UpdateTeachersOfCurrentDisciplinePage = () => {
     dispatch(getTeachersByCurrentDisciplineId(currentDisciplineId));
   }, []);
 
-  const discipline_teachers = useAppSelector(
-    (state) => state.discipline_teacher.discipline_teachers
+  const disciplineTeachers = useAppSelector(
+    (state) => state.discipline_teacher.disciplineTeachers
   );
 
   const handleDeleteDisciplineTeacher = (disciplineTeacherId: number) => {
@@ -46,12 +46,12 @@ export const UpdateTeachersOfCurrentDisciplinePage = () => {
   };
 
   const rows = useMemo(() => {
-    return discipline_teachers.map(({ id, teacher, form_of_conducting_classes }) => ({
+    return disciplineTeachers.map(({ id, teacher, formOfConductingClasses }) => ({
       id: teacher.id,
       firstName: teacher.firstName,
       patronymic: teacher.patronymic,
       lastName: teacher.lastName,
-      form_of_conducting_classes,
+      formOfConductingClasses,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           {checkPermissions([UserRoleEnum.Admin]) && (
@@ -66,7 +66,7 @@ export const UpdateTeachersOfCurrentDisciplinePage = () => {
         </Stack>
       )
     }));
-  }, [discipline_teachers]);
+  }, [disciplineTeachers]);
 
   return (
     <>

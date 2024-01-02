@@ -19,6 +19,20 @@ import { AdminsModule } from './admins/admins.module';
 import { Admin } from './admins/entities/admin.entity';
 import { TeachersModule } from './teachers/teachers.module';
 import { Teacher } from './teachers/entities/teacher.entity';
+import { CurrentDisciplinesModule } from './current-disciplines/current-disciplines.module';
+import { CurrentDiscipline } from './current-disciplines/entities/current-discipline.entity';
+import { GroupsModule } from './groups/group.module';
+import { SpecializationsModule } from './specializations/specializations.module';
+import { DisciplineTeachersModule } from './discipline-teachers/discipline-teachers.module';
+import { DisciplineTeacher } from './discipline-teachers/entities/discipline-teachers.entity';
+import { Group } from './groups/entities/group.entity';
+import { Specialization } from './specializations/entities/specialization.entity';
+import { TasksModule } from './tasks/tasks.module';
+import { Task } from './tasks/entities/tasks.entity';
+import { StudentsModule } from './students/students.module';
+import { Student } from './students/entities/student.entity';
+import { ResultsModule } from './results/results.module';
+import { Result } from './results/entities/result.entity';
 
 @Module({
   imports: [
@@ -44,7 +58,19 @@ import { Teacher } from './teachers/entities/teacher.entity';
       ) => {
         const postgresConfig = configService.get('postgres');
 
-        const entities = [User, Discipline, Admin, Teacher];
+        const entities = [
+          User,
+          Discipline,
+          Admin,
+          Teacher,
+          CurrentDiscipline,
+          DisciplineTeacher,
+          Group,
+          Specialization,
+          Task,
+          Student,
+          Result,
+        ];
 
         return {
           type: 'postgres',
@@ -65,6 +91,13 @@ import { Teacher } from './teachers/entities/teacher.entity';
     DisciplinesModule,
     AdminsModule,
     TeachersModule,
+    CurrentDisciplinesModule,
+    DisciplineTeachersModule,
+    GroupsModule,
+    SpecializationsModule,
+    TasksModule,
+    StudentsModule,
+    ResultsModule,
   ],
 })
 export class AppModule implements NestModule {

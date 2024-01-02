@@ -194,7 +194,7 @@ const teacherRoutes: Page[] = [
 
 export const AppRoutes = () => {
   const isLoadingAdmin = useAppSelector((state) => state.admin.isLoading);
-  const isLoadingCurrentDiscipline = useAppSelector((state) => state.current_discipline.isLoading);
+  const isLoadingCurrentDiscipline = useAppSelector((state) => state.currentDiscipline.isLoading);
   const isLoadingDiscipline = useAppSelector((state) => state.discipline.isLoading);
   const isLoadingDisciplineTeacher = useAppSelector((state) => state.discipline_teacher.isLoading);
   const isLoadingGroup = useAppSelector((state) => state.group.isLoading);

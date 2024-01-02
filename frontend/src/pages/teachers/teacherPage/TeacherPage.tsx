@@ -40,16 +40,16 @@ export const TeacherPage = () => {
 
   const rows = useMemo(() => {
     return currentDisciplines.map((disciplineTeacher) => ({
-      discipline_name: disciplineTeacher.current_discipline.discipline.name,
-      controlForm: disciplineTeacher.current_discipline.discipline.controlForm,
-      form_of_conducing_classes: disciplineTeacher.form_of_conducting_classes,
-      group_name: disciplineTeacher.current_discipline.group.name,
+      discipline_name: disciplineTeacher.currentDiscipline.discipline.name,
+      controlForm: disciplineTeacher.currentDiscipline.discipline.controlForm,
+      form_of_conducing_classes: disciplineTeacher.formOfConductingClasses,
+      group_name: disciplineTeacher.currentDiscipline.group.name,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button
               variant="outlined"
-              onClick={() => { handleOpenCurrentDiscipline(disciplineTeacher.current_discipline.id); }}
+              onClick={() => { handleOpenCurrentDiscipline(disciplineTeacher.currentDiscipline.id); }}
             >
               Open
             </Button>

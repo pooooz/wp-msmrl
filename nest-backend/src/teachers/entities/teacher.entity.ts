@@ -1,9 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { DisciplineTeacher } from 'src/discipline-teachers/entities/discipline-teachers.entity';
+import { Task } from 'src/tasks/entities/tasks.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -29,4 +32,13 @@ export class Teacher {
   @OneToOne(() => User, { nullable: false, cascade: true, onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
+
+  @OneToMany(
+    () => DisciplineTeacher,
+    (disciplineTeacher) => disciplineTeacher.teacher,
+  )
+  disciplineTeachers: Array<DisciplineTeacher>;
+
+  @OneToMany(() => Task, (task) => task.creator)
+  tasks: Array<Task>;
 }

@@ -32,7 +32,7 @@ export const DisciplinePage = () => {
   }, []);
 
   const currentDisciplines = useAppSelector(
-    (state) => state.current_discipline.current_disciplines
+    (state) => state.currentDiscipline.currentDisciplines
   );
 
   const handleOpenCurrentDiscipline = (currentDisciplineId: number) => {
@@ -54,11 +54,11 @@ export const DisciplinePage = () => {
       id: currentDiscipline.id,
       group: currentDiscipline.group.name,
       year: currentDiscipline.year,
-      teachers: currentDiscipline.discipline_teachers.map(({ teacher, form_of_conducting_classes }) => (
+      teachers: currentDiscipline.disciplineTeachers.map(({ teacher, formOfConductingClasses }) => (
         <div key={`${teacher.firstName}${teacher.lastName}${teacher.patronymic}`}>
           {`${teacher.firstName} ${
             teacher.lastName
-          } (${form_of_conducting_classes.toUpperCase()})`}
+          } (${formOfConductingClasses.toUpperCase()})`}
           <br />
         </div>
       )),

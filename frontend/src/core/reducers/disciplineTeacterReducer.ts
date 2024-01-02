@@ -1,23 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
+import { ResponseMessagesEnum } from '../constants/responseMessages';
 
 const initialState = {
   disciplines_teacher: [
     {
       id: 0,
-      form_of_conducting_classes: '',
-      current_discipline: {
+      formOfConductingClasses: '',
+      currentDiscipline: {
         id: 0,
         discipline: { id: 0, name: '', controlForm: '' },
         group: { id: 0, name: '', course: 0 }
       }
     }
   ],
-  discipline_teachers: [
+  disciplineTeachers: [
     {
       id: 0,
-      form_of_conducting_classes: '',
+      formOfConductingClasses: '',
       teacher: { id: 0, firstName: '', patronymic: '', lastName: '' }
     }
   ],
@@ -35,7 +36,7 @@ export const disciplineTeacherSlice = createSlice({
     },
 
     getCurrentDisciplinesByTeacherIdSuccess: (state, action) => {
-      state.disciplines_teacher = action.payload.disciplines_teacher;
+      state.disciplines_teacher = action.payload;
       state.isLoading = false;
     },
 
@@ -44,7 +45,7 @@ export const disciplineTeacherSlice = createSlice({
     },
 
     getTeachersByCurrentDisciplineIdSuccess: (state, action) => {
-      state.discipline_teachers = action.payload.discipline_teachers;
+      state.disciplineTeachers = action.payload;
       state.isLoading = false;
     },
 
@@ -54,9 +55,9 @@ export const disciplineTeacherSlice = createSlice({
 
     createDisciplineTeacherSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.DISCIPLINE_TEACHER_CREATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.DISCIPLINE_TEACHER_CREATED);
     },
 
     deleteDisciplineTeacher: (state, _) => {
@@ -65,12 +66,12 @@ export const disciplineTeacherSlice = createSlice({
 
     deleteDisciplineTeacherSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
-      state.discipline_teachers = state.discipline_teachers.filter(
+      state.message = ResponseMessagesEnum.DISCIPLINE_TEACHER_REMOVED;
+      state.disciplineTeachers = state.disciplineTeachers.filter(
         (disciplineTeacher) => disciplineTeacher.id !== action.payload.id
       );
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.DISCIPLINE_TEACHER_REMOVED);
     },
 
     actionFailed: (state, action) => {

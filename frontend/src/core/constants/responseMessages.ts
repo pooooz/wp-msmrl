@@ -31,7 +31,7 @@ export enum ResponseMessagesEnum {
   DISCIPLINE_TEACHER_CREATED = 'Discipline with teacher created',
   DISCIPLINE_TEACHER_UPDATED = 'Discipline with teacher updated',
   DISCIPLINE_TEACHER_REMOVED = 'Discipline with teacher deleted',
-  DISCIPLINE_TEACHER_UNSUPPORTED_FORM_OF_CONDUCTING_CLASSES = 'Unsupported form of conducing classes',
+  DISCIPLINE_TEACHER_UNSUPPORTED_formOfConductingClasses = 'Unsupported form of conducing classes',
 
   GROUP_NOT_FOUND = 'Group not found',
   GROUP_INSUFFICIENT_PARAMS = "URL hasn't groupId",

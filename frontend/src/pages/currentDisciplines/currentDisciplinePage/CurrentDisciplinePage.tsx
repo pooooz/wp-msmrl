@@ -26,7 +26,7 @@ export const CurrentDisciplinePage = () => {
     dispatch(getCurrentDisciplineById(currentDisciplineId));
   }, []);
 
-  const current_discipline = useAppSelector((state) => state.current_discipline.current_discipline);
+  const currentDiscipline = useAppSelector((state) => state.currentDiscipline.currentDiscipline);
 
   const handleOpenTask = (taskId: number) => {
     const path = generatePath(TASK_ROUTE, {
@@ -49,7 +49,7 @@ export const CurrentDisciplinePage = () => {
   };
 
   const rows = useMemo(() => {
-    return current_discipline.tasks.map((task) => ({
+    return currentDiscipline.tasks.map((task) => ({
       id: task.id,
       task: task.name,
       mandatory: task.mandatory ? 'Yes' : 'No',
@@ -73,7 +73,7 @@ export const CurrentDisciplinePage = () => {
         </Stack>
       )
     }));
-  }, [current_discipline]);
+  }, [currentDiscipline]);
 
   const handleAddTask = () => {
     navigate(ADD_TASK_ROUTE, { state: { currentDisciplineId } });
