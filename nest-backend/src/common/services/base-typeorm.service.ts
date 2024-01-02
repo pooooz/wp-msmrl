@@ -8,7 +8,9 @@ import {
 } from 'typeorm';
 
 @Injectable()
-export abstract class BaseTypeORMService<Entity extends { id: number }> {
+export abstract class BaseTypeORMService<
+  Entity extends { id: number; [key: string]: any },
+> {
   constructor(private readonly entityRepository: Repository<Entity>) {}
 
   async create(createInputDto: DeepPartial<Entity>, ...rest: unknown[]) {
@@ -65,10 +67,10 @@ export abstract class BaseTypeORMService<Entity extends { id: number }> {
     });
   }
 
-  async update(id: number, updateStudentInputDto: DeepPartial<Entity>) {
-    return this.entityRepository.save({
+  async update(id: number, updateInputDto: DeepPartial<Entity>) {
+    return this.entityRepository.update(id, {
+      ...updateInputDto,
       id,
-      ...updateStudentInputDto,
     });
   }
 

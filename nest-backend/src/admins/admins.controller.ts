@@ -97,7 +97,7 @@ export class AdminsController {
     const admin = await this.adminsService.findById(Number(id), { user: true });
 
     if (!admin?.user)
-      throw new BadRequestException('User with this login do not exists');
+      throw new BadRequestException(`Admin with id (${id}) does not exist`);
 
     await this.usersService.update(Number(admin.user.id), updateAdminInputDto);
 

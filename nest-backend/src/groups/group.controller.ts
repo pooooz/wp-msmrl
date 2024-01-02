@@ -69,7 +69,7 @@ export class GroupsController {
     type: Array<Group>,
   })
   findAll() {
-    return this.groupsService.findAll();
+    return this.groupsService.findAll({ specialization: true });
   }
 
   @Get(':id')
@@ -81,7 +81,10 @@ export class GroupsController {
     type: Group,
   })
   findOne(@Param('id') id: string) {
-    return this.groupsService.findById(Number(id), { specialization: true });
+    return this.groupsService.findById(Number(id), {
+      specialization: true,
+      students: true,
+    });
   }
 
   @Patch(':id')
@@ -90,6 +93,25 @@ export class GroupsController {
     @Param('id') id: string,
     @Body() updateGroupInputDto: UpdateGroupInputDto,
   ) {
+    if (updateGroupInputDto.specializationId) {
+      const specialization = await this.specializationsService.findById(
+        updateGroupInputDto.specializationId,
+      );
+
+      if (!specialization) {
+        throw new BadRequestException(
+          `Specialization with id (${updateGroupInputDto.specializationId}) does not exist`,
+        );
+      }
+
+      const { specializationId, ...updateGroupInputDtoRest } =
+        updateGroupInputDto;
+      return this.groupsService.update(Number(id), {
+        ...updateGroupInputDtoRest,
+        specialization,
+      });
+    }
+
     return this.groupsService.update(Number(id), updateGroupInputDto);
   }
 
