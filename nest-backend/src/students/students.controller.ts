@@ -91,6 +91,23 @@ export class StudentsController {
     @Param('id') id: string,
     @Body() updateStudentInputDto: UpdateStudentInputDto,
   ) {
+    if (updateStudentInputDto.groupId) {
+      const group = await this.groupsService.findById(
+        updateStudentInputDto.groupId,
+      );
+
+      if (!group) {
+        throw new BadRequestException(
+          `Group with id (${updateStudentInputDto.groupId}) does not exist`,
+        );
+      }
+
+      const { groupId, ...updateStudentInputDtoRest } = updateStudentInputDto;
+      return this.studentsService.update(Number(id), {
+        ...updateStudentInputDtoRest,
+        group,
+      });
+    }
     return this.studentsService.update(Number(id), updateStudentInputDto);
   }
 

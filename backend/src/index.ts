@@ -25,7 +25,7 @@ app.use('/admins', adminRouter); // +
 app.use('/sign-in', signInRouter); // +
 app.use('/specializations', specializationRouter); // +
 app.use('/groups', groupRouter); // +
-app.use('/students', studentRouter);
+app.use('/students', studentRouter); // +
 app.use('/disciplines', disciplineRouter); // +
 app.use('/currentDisciplines', currentDisciplineRouter);
 app.use('/disciplineTeachers', disciplineTeacherRouter);
