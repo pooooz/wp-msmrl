@@ -26,6 +26,7 @@ import { CreateCurrentDisciplineInputDto } from './dto/create-current-discipline
 import { UpdateCurrentDisciplineInputDto } from './dto/update-current-discipline.dto';
 import { DisciplinesService } from 'src/disciplines/disciplines.service';
 import { GroupsService } from 'src/groups/group.service';
+import { DeepPartial } from 'typeorm';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -44,7 +45,7 @@ export class CurrentDisciplinesController {
   @ApiOperation({ summary: 'Create current discipline' })
   @ApiResponse({
     status: 201,
-    description: 'Create current created',
+    description: 'Current discipline created',
     type: CurrentDiscipline,
   })
   async create(
@@ -153,10 +154,38 @@ export class CurrentDisciplinesController {
     @Param('id') id: string,
     @Body() updateCurrentDisciplineInputDto: UpdateCurrentDisciplineInputDto,
   ) {
-    return this.currentDisciplinesService.update(
-      Number(id),
-      updateCurrentDisciplineInputDto,
-    );
+    const { disciplineId, groupId, ...updateStudentInputDtoRest } =
+      updateCurrentDisciplineInputDto;
+
+    const updateDto: DeepPartial<CurrentDiscipline> = {
+      ...updateStudentInputDtoRest,
+    };
+
+    if (disciplineId) {
+      const discipline = await this.disciplinesService.findById(disciplineId);
+
+      if (!discipline) {
+        throw new BadRequestException(
+          `Discipline with id (${updateCurrentDisciplineInputDto.disciplineId}) does not exist`,
+        );
+      }
+
+      updateDto.discipline = discipline;
+    }
+
+    if (groupId) {
+      const group = await this.groupsService.findById(groupId);
+
+      if (!group) {
+        throw new BadRequestException(
+          `Group with id (${updateCurrentDisciplineInputDto.groupId}) does not exist`,
+        );
+      }
+
+      updateDto.group = group;
+    }
+
+    return this.currentDisciplinesService.update(Number(id), updateDto);
   }
 
   @Delete(':id')

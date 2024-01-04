@@ -24,6 +24,7 @@ import { GroupsService } from 'src/groups/group.service';
 import { CreateStudentInputDto } from './dto/create-student.dto';
 import { Student } from './entities/student.entity';
 import { UpdateStudentInputDto } from './dto/update-student.dto';
+import { DeepPartial } from 'typeorm';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -91,24 +92,22 @@ export class StudentsController {
     @Param('id') id: string,
     @Body() updateStudentInputDto: UpdateStudentInputDto,
   ) {
-    if (updateStudentInputDto.groupId) {
-      const group = await this.groupsService.findById(
-        updateStudentInputDto.groupId,
-      );
+    const { groupId, ...updateStudentInputDtoRest } = updateStudentInputDto;
+    const udpateDto: DeepPartial<Student> = { ...updateStudentInputDtoRest };
+
+    if (groupId) {
+      const group = await this.groupsService.findById(groupId);
 
       if (!group) {
         throw new BadRequestException(
-          `Group with id (${updateStudentInputDto.groupId}) does not exist`,
+          `Group with id (${groupId}) does not exist`,
         );
       }
 
-      const { groupId, ...updateStudentInputDtoRest } = updateStudentInputDto;
-      return this.studentsService.update(Number(id), {
-        ...updateStudentInputDtoRest,
-        group,
-      });
+      udpateDto.group = group;
     }
-    return this.studentsService.update(Number(id), updateStudentInputDto);
+
+    return this.studentsService.update(Number(id), udpateDto);
   }
 
   @Delete(':id')

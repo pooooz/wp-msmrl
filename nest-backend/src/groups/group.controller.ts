@@ -25,6 +25,7 @@ import { Group } from './entities/group.entity';
 import { CreateGroupInputDto } from './dto/create-group.dto';
 import { UpdateGroupInputDto } from './dto/update-group.dto';
 import { SpecializationsService } from 'src/specializations/specializations.service';
+import { DeepPartial } from 'typeorm';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -93,26 +94,25 @@ export class GroupsController {
     @Param('id') id: string,
     @Body() updateGroupInputDto: UpdateGroupInputDto,
   ) {
-    if (updateGroupInputDto.specializationId) {
+    const { specializationId, ...updateGroupInputDtoRest } =
+      updateGroupInputDto;
+    const updateDto: DeepPartial<Group> = { ...updateGroupInputDtoRest };
+
+    if (specializationId) {
       const specialization = await this.specializationsService.findById(
-        updateGroupInputDto.specializationId,
+        specializationId,
       );
 
       if (!specialization) {
         throw new BadRequestException(
-          `Specialization with id (${updateGroupInputDto.specializationId}) does not exist`,
+          `Specialization with id (${specializationId}) does not exist`,
         );
       }
 
-      const { specializationId, ...updateGroupInputDtoRest } =
-        updateGroupInputDto;
-      return this.groupsService.update(Number(id), {
-        ...updateGroupInputDtoRest,
-        specialization,
-      });
+      updateDto.specialization = specialization;
     }
 
-    return this.groupsService.update(Number(id), updateGroupInputDto);
+    return this.groupsService.update(Number(id), updateDto);
   }
 
   @Delete(':id')

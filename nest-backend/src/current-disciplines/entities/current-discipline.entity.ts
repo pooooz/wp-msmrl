@@ -38,10 +38,6 @@ export class CurrentDiscipline {
   )
   disciplineTeachers: Array<DisciplineTeacher>;
 
-  @OneToOne(() => User, { nullable: false, cascade: true, onDelete: 'CASCADE' })
-  @JoinColumn()
-  user: User;
-
   @OneToMany(() => Task, (task) => task.creator)
   tasks: Array<Task>;
 }
