@@ -1,16 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { DisciplineTeacher } from 'src/discipline-teachers/entities/discipline-teachers.entity';
 import { Discipline } from 'src/disciplines/entities/discipline.entity';
 import { Group } from 'src/groups/entities/group.entity';
 import { Task } from 'src/tasks/entities/tasks.entity';
-import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -38,6 +36,6 @@ export class CurrentDiscipline {
   )
   disciplineTeachers: Array<DisciplineTeacher>;
 
-  @OneToMany(() => Task, (task) => task.creator)
+  @OneToMany(() => Task, (task) => task.currentDiscipline)
   tasks: Array<Task>;
 }

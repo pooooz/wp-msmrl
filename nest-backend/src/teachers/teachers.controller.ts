@@ -60,7 +60,7 @@ export class TeachersController {
 
     await this.authService.signUp({
       ...createTeacherInputDto,
-      role: UserRole.Admin,
+      role: UserRole.Teacher,
     });
 
     const user = await this.usersService.findByLogin(

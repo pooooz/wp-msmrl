@@ -145,6 +145,7 @@ export class CurrentDisciplinesController {
     return this.currentDisciplinesService.findById(Number(id), {
       discipline: true,
       group: true,
+      tasks: true,
     });
   }
 

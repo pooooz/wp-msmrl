@@ -7,6 +7,7 @@ import { CreateTaskInputDto } from './dto/create-tasks.dto';
 import { CurrentDiscipline } from 'src/current-disciplines/entities/current-discipline.entity';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
 import { BaseTypeORMService } from 'src/common/services/base-typeorm.service';
+import { TaskEvaluationScale } from 'src/common/contracts/enums/task-evaluation-scale.enum';
 
 @Injectable()
 export class TasksService extends BaseTypeORMService<Task> {
@@ -21,11 +22,13 @@ export class TasksService extends BaseTypeORMService<Task> {
     createTaskInputDto: CreateTaskInputDto,
     currentDiscipline: CurrentDiscipline,
     creator: Teacher,
+    evaluationScale: TaskEvaluationScale,
   ) {
     const task = this.taskRepository.create({
       ...createTaskInputDto,
       currentDiscipline,
       creator,
+      evaluationScale,
     });
 
     return this.taskRepository.save(task);

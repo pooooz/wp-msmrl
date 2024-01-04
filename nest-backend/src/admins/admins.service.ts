@@ -1,17 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsRelations, FindOptionsSelect, Repository } from 'typeorm';
+
 import { Admin } from './entities/admin.entity';
 import { CreateAdminInputDto } from './dto/create-admin.dto';
-import { UpdateAdminInputDto } from './dto/update-admin.dto';
 import { User } from 'src/users/entities/user.entity';
+import { BaseTypeORMService } from 'src/common/services/base-typeorm.service';
 
 @Injectable()
-export class AdminsService {
+export class AdminsService extends BaseTypeORMService<Admin> {
   constructor(
     @InjectRepository(Admin)
     private readonly adminRepository: Repository<Admin>,
-  ) {}
+  ) {
+    super(adminRepository);
+  }
 
   async create(createAdminInputDto: CreateAdminInputDto, user: User) {
     const admin = this.adminRepository.create({
@@ -32,42 +35,17 @@ export class AdminsService {
     return adminWithoutPassword;
   }
 
-  async findAll(
+  async findByUserId(
+    userId: number,
     relations?: FindOptionsRelations<Admin>,
     select?: FindOptionsSelect<Admin>,
   ) {
-    return this.adminRepository.find({
-      relations,
-      select,
-    });
-  }
-
-  async findById(
-    id: number,
-    relations?: FindOptionsRelations<Admin>,
-    select?: FindOptionsSelect<Admin>,
-  ): Promise<Admin | null> {
     return this.adminRepository.findOne({
       where: {
-        id,
+        user: { id: userId },
       },
       relations,
       select,
     });
-  }
-
-  async update(id: number, updateAdminInputDto: UpdateAdminInputDto) {
-    return this.adminRepository.save({
-      id,
-      ...updateAdminInputDto,
-    });
-  }
-
-  async remove(id: number) {
-    return this.adminRepository.delete(id);
-  }
-
-  public getRepository() {
-    return this.adminRepository;
   }
 }

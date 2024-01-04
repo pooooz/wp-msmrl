@@ -28,6 +28,7 @@ import { CreateTaskInputDto } from './dto/create-tasks.dto';
 import { TeachersService } from 'src/teachers/teachers.service';
 import { TaskEvaluationScale } from 'src/common/contracts/enums/task-evaluation-scale.enum';
 import { UpdateTaskInputDto } from './dto/update-tasks.dto';
+import { DeepPartial } from 'typeorm';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -66,11 +67,11 @@ export class TasksController {
       );
     }
 
-    const teacher = await this.teachersService.findById(Number(user?.sub));
+    const teacher = await this.teachersService.findByUserId(Number(user?.sub));
 
     if (!teacher) {
       throw new BadRequestException(
-        `Teacher task with id (${user?.sub}) does not exist`,
+        `Teacher with id (${user?.sub}) does not exist`,
       );
     }
 
@@ -107,6 +108,7 @@ export class TasksController {
       createTaskInputDto,
       currentDiscipline,
       teacher,
+      evaluationScale,
     );
   }
 
@@ -144,9 +146,53 @@ export class TasksController {
   @RequiredUserRoles(UserRole.Teacher)
   async update(
     @Param('id') id: string,
+    @Req() request: Request,
     @Body() updateTaskInputDto: UpdateTaskInputDto,
   ) {
-    return this.tasksService.update(Number(id), updateTaskInputDto);
+    const { user } = request;
+
+    const task = await this.tasksService.findById(Number(id), {
+      creator: true,
+    });
+
+    if (!task) {
+      throw new BadRequestException(`Task with id (${id}) does not exist`);
+    }
+
+    const teacher = await this.teachersService.findByUserId(Number(user?.sub));
+
+    if (!teacher) {
+      throw new BadRequestException(
+        `Teacher with id (${user?.sub}) does not exist`,
+      );
+    }
+
+    if (task.creator.id !== teacher.id) {
+      throw new BadRequestException(`You cannot change this task`);
+    }
+
+    const { currentDisciplineId, ...updateTaskInputDtoRest } =
+      updateTaskInputDto;
+
+    const updateDto: DeepPartial<Task> = {
+      ...updateTaskInputDtoRest,
+    };
+
+    if (currentDisciplineId) {
+      const currentDiscipline = await this.currentDisciplinesService.findById(
+        currentDisciplineId,
+      );
+
+      if (!currentDiscipline) {
+        throw new BadRequestException(
+          `Current discipline with id (${currentDisciplineId}) does not exist`,
+        );
+      }
+
+      updateDto.currentDiscipline = currentDiscipline;
+    }
+
+    return this.tasksService.update(Number(id), updateDto);
   }
 
   @Delete(':id')
