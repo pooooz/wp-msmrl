@@ -20,7 +20,7 @@ export const rootReducer = combineReducers({
   teacher: teacherReducer,
   admin: adminReducer,
   discipline_teacher: disciplineTeacterReducer,
-  current_discipline: currentDisciplineReducer,
+  currentDiscipline: currentDisciplineReducer,
   task: taskReducer,
   result: resultReducer
 });

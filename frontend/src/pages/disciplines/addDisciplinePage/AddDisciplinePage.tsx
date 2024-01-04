@@ -7,7 +7,7 @@ import { createDiscipline } from '../../../core/reducers/disciplineReducer';
 export const AddDisciplinePage = () => {
   const dispatch = useAppDispatch();
 
-  const [discipline, setDiscipline] = useState({ name: '', control_form: '' });
+  const [discipline, setDiscipline] = useState({ name: '', controlForm: '' });
 
   const handleChange = (event: any) => {
     setDiscipline((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
@@ -39,8 +39,8 @@ export const AddDisciplinePage = () => {
           <Select
             labelId="control-form-label"
             id="control-form-select"
-            name="control_form"
-            value={discipline.control_form}
+            name="controlForm"
+            value={discipline.controlForm}
             onChange={handleChange}
             label="Specialization"
           >

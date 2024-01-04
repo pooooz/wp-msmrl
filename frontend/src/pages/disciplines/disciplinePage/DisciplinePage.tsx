@@ -32,7 +32,7 @@ export const DisciplinePage = () => {
   }, []);
 
   const currentDisciplines = useAppSelector(
-    (state) => state.current_discipline.current_disciplines
+    (state) => state.currentDiscipline.currentDisciplines
   );
 
   const handleOpenCurrentDiscipline = (currentDisciplineId: number) => {
@@ -51,19 +51,20 @@ export const DisciplinePage = () => {
 
   const rows = useMemo(() => {
     return currentDisciplines.map((currentDiscipline) => ({
+      id: currentDiscipline.id,
       group: currentDiscipline.group.name,
       year: currentDiscipline.year,
-      teachers: currentDiscipline.discipline_teachers.map(({ teacher, form_of_conducting_classes }) => (
-        <div key={`${teacher.first_name}${teacher.last_name}${teacher.patronumic}`}>
-          {`${teacher.first_name} ${
-            teacher.last_name
-          } (${form_of_conducting_classes.toUpperCase()})`}
+      teachers: currentDiscipline.disciplineTeachers.map(({ teacher, formOfConductingClasses }) => (
+        <div key={`${teacher.firstName}${teacher.lastName}${teacher.patronymic}`}>
+          {`${teacher.firstName} ${
+            teacher.lastName
+          } (${formOfConductingClasses.toUpperCase()})`}
           <br />
         </div>
       )),
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button
               variant="outlined"
               onClick={() => { handleUpdateCurrentDisciplineTeachers(currentDiscipline.id); }}
@@ -71,7 +72,7 @@ export const DisciplinePage = () => {
               Teachers
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button
               variant="outlined"
               onClick={() => { handleOpenCurrentDiscipline(currentDiscipline.id); }}
@@ -98,7 +99,7 @@ export const DisciplinePage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button
             variant="contained"
@@ -110,7 +111,7 @@ export const DisciplinePage = () => {
           </Button>
         </Stack>
       )}
-      {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+      {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button
             variant="contained"

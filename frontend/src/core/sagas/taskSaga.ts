@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { DELETE, GET, PATCH, POST } from '../api/requests';
 import {
-  actionFailid,
+  actionFailed,
   createTask,
   createTaskSuccess,
   deleteTask,
@@ -19,7 +19,7 @@ function* getTaskByIdWorker({ payload }: any) {
     const response: object = yield call(async () => await GET(`${TASK_BASE_URL}/${payload}`));
     yield put(getTaskByIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -28,7 +28,7 @@ function* createTaskWorker({ payload }: any) {
     const response: object = yield call(async () => await POST(TASK_BASE_URL, payload));
     yield put(createTaskSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -38,7 +38,7 @@ function* updateTaskWorker({ payload }: any) {
     const response: object = yield call(async () => await PATCH(`${TASK_BASE_URL}/${id}`, data));
     yield put(updateTaskSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -47,7 +47,7 @@ function* deleteTaskWorker({ payload }: any) {
     const response: object = yield call(async () => await DELETE(`${TASK_BASE_URL}/${payload}`));
     yield put(deleteTaskSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 

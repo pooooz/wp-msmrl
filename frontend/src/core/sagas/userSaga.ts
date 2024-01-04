@@ -3,45 +3,48 @@ import decode from 'jwt-decode';
 import { POST } from '../api/requests';
 import {
   signIn,
-  signInFailid,
+  signInFailed,
   signInSuccess,
   updateToken,
-  updateTokenFailid,
+  updateTokenFailed,
   updateTokenSuccess
 } from '../reducers/userReducer';
 import { LocalStorageItemsEnum } from '../constants/LocalStorageItemsEnum';
 
 function* updateTokenWorker() {
   try {
-    const { token } = yield call(async () => await POST('/sign-in/updateToken'));
+    const { accessToken, refreshToken } = yield call(async () => await POST('/refresh'));
 
-    yield localStorage.setItem(LocalStorageItemsEnum.TOKEN, token);
+    yield localStorage.setItem(LocalStorageItemsEnum.AccessToken, accessToken);
+    yield localStorage.setItem(LocalStorageItemsEnum.RefreshToken, refreshToken);
 
-    const { role } = yield decode(token);
+    const { sub, role } = yield decode(accessToken);
 
-    yield localStorage.setItem(LocalStorageItemsEnum.ROLE, role);
+    yield localStorage.setItem(LocalStorageItemsEnum.UserId, sub);
+    yield localStorage.setItem(LocalStorageItemsEnum.Role, role);
 
     yield put(updateTokenSuccess({ role }));
   } catch (err) {
-    yield put(updateTokenFailid());
+    yield put(updateTokenFailed());
   }
 }
 
 function* signInWorker({ payload }: any) {
   try {
-    const { token } = yield call(async () => await POST('/sign-in', payload));
+    const { accessToken, refreshToken } = yield call(async () => await POST('/sign-in', payload));
 
-    yield localStorage.setItem(LocalStorageItemsEnum.TOKEN, token);
+    yield localStorage.setItem(LocalStorageItemsEnum.AccessToken, accessToken);
+    yield localStorage.setItem(LocalStorageItemsEnum.RefreshToken, refreshToken);
 
-    const { role, user } = yield decode(token);
+    const { role, sub } = yield decode(accessToken);
 
-    yield localStorage.setItem(LocalStorageItemsEnum.ROLE, role);
+    yield localStorage.setItem(LocalStorageItemsEnum.Role, role);
 
-    yield localStorage.setItem(LocalStorageItemsEnum.USER_ID, user.id);
+    yield localStorage.setItem(LocalStorageItemsEnum.UserId, sub);
 
     yield put(signInSuccess({ role }));
   } catch (err) {
-    yield put(signInFailid(err));
+    yield put(signInFailed(err));
   }
 }
 

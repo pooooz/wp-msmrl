@@ -19,7 +19,7 @@ export const AddResultPage = () => {
     if (state && 'taskId' in state) {
       dispatch(getStudentsByTaskId(state.taskId));
       dispatch(getTaskById(state.taskId));
-      setResult((prevState) => ({ ...prevState, taskId: state.taskId }));
+      setResult((prevState) => ({ ...prevState, taskId: Number(state.taskId) }));
     }
   }, []);
 
@@ -33,15 +33,15 @@ export const AddResultPage = () => {
         value={student.id}
         key={student.id}
       >
-        {`${student.first_name} ${student.last_name}`}
+        {`${student.firstName} ${student.lastName}`}
       </MenuItem>
     ));
   }, [students]);
 
   const dropdownMarkItems = useMemo(() => {
-    if (task.evaluation_scale === EvaluationScaleEnum.TEN_POINT) {
+    if (task.evaluationScale === EvaluationScaleEnum.TenPoint) {
       return tenPointMarks.map((mark) => <MenuItem value={mark} key={mark}>{mark}</MenuItem>);
-    } else if (task.evaluation_scale === EvaluationScaleEnum.CREDIT) {
+    } else if (task.evaluationScale === EvaluationScaleEnum.Credit) {
       return creditMarks.map((mark) => <MenuItem value={mark.value} key={mark.value}>{mark.title}</MenuItem>);
     }
   }, [task]);

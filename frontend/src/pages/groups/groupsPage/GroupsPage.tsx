@@ -50,22 +50,23 @@ export const GroupsPage = () => {
 
   const rows = useMemo(() => {
     return groups.map((group) => ({
+      id: group.id,
       name: group.name,
       course: group.course,
       specialization: group.specialization.name,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button variant="outlined" onClick={() => { handleOpenGroup(group.id); }}>
               Open
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button variant="outlined" color="warning" onClick={() => { handleUpdateGroup(group.id); }}>
               Update
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button variant="outlined" color="error" onClick={() => { handleDeleteGroup(group.id); }}>
               Delete
             </Button>
@@ -78,7 +79,7 @@ export const GroupsPage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button variant="contained" color="primary" sx={{ mt: 1 }} onClick={handleAddGroup}>
             Add

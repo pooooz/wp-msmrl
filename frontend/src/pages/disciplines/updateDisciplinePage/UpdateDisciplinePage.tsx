@@ -16,7 +16,7 @@ export const UpdateDisciplinePage = () => {
 
   const { discipline, isLoading } = useAppSelector((state) => state.discipline);
 
-  const [updatedDiscipline, setUpdatedDiscipline] = useState({ name: '', control_form: '' });
+  const [updatedDiscipline, setUpdatedDiscipline] = useState({ name: '', controlForm: '' });
 
   useEffect(() => {
     if (!isLoading) {
@@ -57,8 +57,8 @@ export const UpdateDisciplinePage = () => {
           <Select
             labelId="control-form-label"
             id="control-form-select"
-            name="control_form"
-            value={updatedDiscipline.control_form}
+            name="controlForm"
+            value={updatedDiscipline.controlForm}
             onChange={handleChange}
             label="Specialization"
           >

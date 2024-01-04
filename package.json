@@ -9,29 +9,24 @@
   "private": true,
   "scripts": {
     "install:backend": "yarn workspace backend install",
-    "install:nest-backend": "yarn workspace nest-backend install",
     "install:frontend": "yarn workspace frontend install",
 
     "build": "npm-run-all --parallel build:backend build:frontend",
     "build:backend": "yarn workspace backend run build",
-    "build:nest-backend": "yarn workspace nest-backend run build",
     "build:frontend": "yarn workspace frontend run build",
 
     "start": "npm-run-all --parallel start:backend start:frontend",
     "start:backend": "yarn workspace backend run start",
-    "start:nest-backend": "yarn workspace nest-backend run start",
     "start:frontend": "yarn workspace frontend run start",
 
     "start:dev": "npm-run-all --parallel start:dev:*",
     "start:dev:backend": "yarn workspace backend run start:dev",
-    "start:dev:nest-backend": "yarn workspace nest-backend run start:dev",
     "start:dev:frontend": "yarn workspace frontend run start:dev",
 
     "heroku-postbuild": "if [ \"$BUILD_ENV\" = \"backend\" ]; then yarn workspace backend build; elif [ \"$BUILD_ENV\" = \"frontend\" ]; then yarn workspace frontend build; else echo no environment detected, please set BUILD_ENV; fi"
   },
   "workspaces": [
     "backend",
-    "nest-backend",
     "frontend"
   ],
   "dependencies": {

@@ -20,7 +20,7 @@ export const AddTeacherToCurrentDisciplinePage = () => {
   const [disciplineTeacher, setDisciplineTeacher] = useState({
     currentDisciplineId,
     teacherId: NaN,
-    form_of_conducting_classes: ''
+    formOfConductingClasses: ''
   });
 
   const dropdownTeacherItems = useMemo(() => {
@@ -29,7 +29,7 @@ export const AddTeacherToCurrentDisciplinePage = () => {
         value={teacher.id}
         key={teacher.id}
       >
-        {`${teacher.first_name} ${teacher.last_name}`}
+        {`${teacher.firstName} ${teacher.lastName}`}
       </MenuItem>
     ));
   }, [teachers]);
@@ -53,7 +53,7 @@ export const AddTeacherToCurrentDisciplinePage = () => {
   const handleChangeForm = (event: any) => {
     setDisciplineTeacher((prevState) => ({
       ...prevState,
-      form_of_conducting_classes: event.target.value
+      formOfConductingClasses: event.target.value
     }));
   };
 
@@ -84,7 +84,7 @@ export const AddTeacherToCurrentDisciplinePage = () => {
           <Select
             labelId="form-label"
             id="form-select"
-            value={disciplineTeacher.form_of_conducting_classes}
+            value={disciplineTeacher.formOfConductingClasses}
             onChange={handleChangeForm}
             label="Form Of Conducting Classes"
           >
