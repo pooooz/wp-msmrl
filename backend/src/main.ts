@@ -1,8 +1,9 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, PartialGraphHost } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
+import * as fs from 'fs';
 import {
   DocumentBuilder,
   SwaggerDocumentOptions,
@@ -33,7 +34,10 @@ import { ResultsModule } from './results/results.module';
 const DEFAULT_PORT = 4000;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    // snapshot: true,
+    // abortOnError: false,
+  });
   const configService = app.get(ConfigService);
 
   app.useGlobalPipes(new ValidationPipe());

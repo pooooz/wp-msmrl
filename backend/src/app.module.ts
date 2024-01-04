@@ -33,6 +33,7 @@ import { StudentsModule } from './students/students.module';
 import { Student } from './students/entities/student.entity';
 import { ResultsModule } from './results/results.module';
 import { Result } from './results/entities/result.entity';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
 
 @Module({
   imports: [
@@ -98,6 +99,11 @@ import { Result } from './results/entities/result.entity';
     TasksModule,
     StudentsModule,
     ResultsModule,
+
+    // DevtoolsModule.register({
+    //   port: 4001,
+    //   http: process.env.NODE_ENV !== 'production',
+    // }),
   ],
 })
 export class AppModule implements NestModule {
