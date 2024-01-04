@@ -1,4 +1,5 @@
 import {
+  IsEmpty,
   IsInt,
   IsNotEmpty,
   IsNumber,
@@ -25,5 +26,6 @@ export class CreateResultInputDto {
   mark: number;
 
   @IsString()
-  comment?: string;
+  @IsNotEmpty()
+  comment: string;
 }

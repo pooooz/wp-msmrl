@@ -86,6 +86,27 @@ export class StudentsController {
     return this.studentsService.findById(Number(id), { group: true });
   }
 
+  @Get('/tasks/:taskId')
+  @RequiredUserRoles(UserRole.Admin, UserRole.Teacher)
+  @ApiOperation({ summary: 'Find students by task id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Find students by task id',
+    type: Student,
+  })
+  findByTaskId(@Param('taskId') taskId: string) {
+    return this.studentsService.find(
+      {
+        group: {
+          currentDisciplines: {
+            tasks: { id: Number(taskId) },
+          },
+        },
+      },
+      { group: true },
+    );
+  }
+
   @Patch(':id')
   @RequiredUserRoles(UserRole.Admin)
   async update(

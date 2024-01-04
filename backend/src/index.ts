@@ -29,8 +29,8 @@ app.use('/students', studentRouter); // +
 app.use('/disciplines', disciplineRouter); // +
 app.use('/currentDisciplines', currentDisciplineRouter); // +
 app.use('/disciplineTeachers', disciplineTeacherRouter); // +
-app.use('/tasks', taskRouter);
-app.use('/results', resultRouter);
+app.use('/tasks', taskRouter); // +
+app.use('/results', resultRouter); // +
 
 const main = async () => {
   try {

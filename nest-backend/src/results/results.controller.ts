@@ -25,6 +25,7 @@ import { CreateResultInputDto } from './dto/create-result.dto';
 import { StudentsService } from 'src/students/students.service';
 import { TasksService } from 'src/tasks/tasks.service';
 import { UpdateResultInputDto } from './dto/update-result.dto';
+import { DeepPartial } from 'typeorm';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -96,16 +97,82 @@ export class ResultsController {
     });
   }
 
+  @Get('/tasks/:taskId')
+  @RequiredUserRoles(UserRole.Admin, UserRole.Teacher)
+  @ApiOperation({ summary: 'Find results by task id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Find results by task id',
+    type: Array<Result>,
+  })
+  findByTaskId(@Param('taskId') taskId: string) {
+    return this.resultsService.find(
+      { task: { id: Number(taskId) } },
+      { student: true },
+    );
+  }
+
+  @Get('/students/:studentId')
+  @RequiredUserRoles(UserRole.Admin, UserRole.Teacher)
+  @ApiOperation({ summary: 'Find results by student id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Find results by student id',
+    type: Array<Result>,
+  })
+  findByStudentId(@Param('studentId') studentId: string) {
+    return this.resultsService.find(
+      { student: { id: Number(studentId) } },
+      {
+        task: {
+          currentDiscipline: {
+            discipline: true,
+          },
+        },
+      },
+    );
+  }
+
   @Patch(':id')
   @RequiredUserRoles(UserRole.Admin)
   async update(
     @Param('id') id: string,
     @Body() updateResultInputDto: UpdateResultInputDto,
   ) {
-    return this.resultsService.update(Number(id), updateResultInputDto);
+    const { studentId, taskId, ...updateResultInputDtoRest } =
+      updateResultInputDto;
+
+    const updateDto: DeepPartial<Result> = {
+      ...updateResultInputDtoRest,
+    };
+
+    if (studentId) {
+      const student = await this.studentsService.findById(studentId);
+
+      if (!student) {
+        throw new BadRequestException(
+          `Student discipline with id (${studentId}) does not exist`,
+        );
+      }
+
+      updateDto.student = student;
+    }
+
+    if (taskId) {
+      const task = await this.tasksService.findById(taskId);
+
+      if (!task) {
+        throw new BadRequestException(
+          `Task with id (${taskId}) does not exist`,
+        );
+      }
+
+      updateDto.task = task;
+    }
+
+    return this.resultsService.update(Number(id), updateDto);
   }
 
-  @Delete(':id')
   @RequiredUserRoles(UserRole.Admin)
   async remove(@Param('id') id: string) {
     return this.resultsService.remove(Number(id));

@@ -19,7 +19,7 @@ export const AddResultPage = () => {
     if (state && 'taskId' in state) {
       dispatch(getStudentsByTaskId(state.taskId));
       dispatch(getTaskById(state.taskId));
-      setResult((prevState) => ({ ...prevState, taskId: state.taskId }));
+      setResult((prevState) => ({ ...prevState, taskId: Number(state.taskId) }));
     }
   }, []);
 
