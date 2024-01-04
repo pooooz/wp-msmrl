@@ -40,14 +40,14 @@ import { Result } from './results/entities/result.entity';
       isGlobal: true,
       load: [configuration],
     }),
-    // MongooseModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   inject: [ConfigService],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     uri: configService.get('mongodb').store,
-    //   }),
-    // }),
-    // EventLoggerModule,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get('mongodb').store,
+      }),
+    }),
+    EventLoggerModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule, EventLoggerModule],
       inject: [ConfigService, EventLoggerService],
@@ -81,8 +81,8 @@ import { Result } from './results/entities/result.entity';
           database: postgresConfig.database,
           entities,
           synchronize: true,
-          // logging: ['query', 'error'],
-          // logger: new DatabaseLogger(eventLoggerService),
+          logging: ['query', 'error'],
+          logger: new DatabaseLogger(eventLoggerService),
         };
       },
     }),
