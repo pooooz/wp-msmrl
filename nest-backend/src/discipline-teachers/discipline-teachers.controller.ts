@@ -15,7 +15,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
 
 import { UserRole } from 'src/common/contracts';
 import { UserRoleGuard } from 'src/common/guards/user-role.guard';
@@ -26,6 +25,7 @@ import { CreateDisciplineTeacherInputDto } from './dto/create-discipline-teacher
 import { CurrentDisciplinesService } from 'src/current-disciplines/current-disciplines.service';
 import { TeachersService } from 'src/teachers/teachers.service';
 import { UpdateDisciplineTeacherInputDto } from './dto/update-discipline-teacher.dto';
+import { DeepPartial } from 'typeorm';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -122,16 +122,93 @@ export class DisciplineTeachersController {
     });
   }
 
+  @Get('/teachers/:teacherId')
+  @RequiredUserRoles(UserRole.Admin, UserRole.Teacher)
+  @ApiOperation({ summary: 'Find discipline teachers' })
+  @ApiResponse({
+    status: 200,
+    description: 'Find discipline teachers by teacher id',
+    type: DisciplineTeacher,
+  })
+  async findByTeacherId(@Param('teacherId') teacherId: string) {
+    return this.disciplineTeachersService.find(
+      {
+        teacher: { id: Number(teacherId) },
+      },
+      {
+        currentDiscipline: {
+          discipline: true,
+          group: true,
+        },
+        teacher: true,
+      },
+    );
+  }
+
+  @Get('/currentDisciplines/:currentDisciplineId')
+  @RequiredUserRoles(UserRole.Admin, UserRole.Teacher)
+  @ApiOperation({ summary: 'Find discipline teachers' })
+  @ApiResponse({
+    status: 200,
+    description: 'Find discipline teacher by current discipline id',
+    type: DisciplineTeacher,
+  })
+  async findByCurrentDisciplineId(
+    @Param('currentDisciplineId') currentDisciplineId: string,
+  ) {
+    return this.disciplineTeachersService.find(
+      {
+        currentDiscipline: { id: Number(currentDisciplineId) },
+      },
+      {
+        teacher: true,
+      },
+    );
+  }
+
   @Patch(':id')
   @RequiredUserRoles(UserRole.Admin)
   async update(
     @Param('id') id: string,
     @Body() updateDisciplineTeacherInputDto: UpdateDisciplineTeacherInputDto,
   ) {
-    return this.disciplineTeachersService.update(
-      Number(id),
-      updateDisciplineTeacherInputDto,
-    );
+    const {
+      currentDisciplineId,
+      teacherId,
+      ...updateDisciplineTeacherInputDtoRest
+    } = updateDisciplineTeacherInputDto;
+
+    const updateDto: DeepPartial<DisciplineTeacher> = {
+      ...updateDisciplineTeacherInputDtoRest,
+    };
+
+    if (currentDisciplineId) {
+      const currentDiscipline = await this.currentDisciplinesService.findById(
+        currentDisciplineId,
+      );
+
+      if (!currentDiscipline) {
+        throw new BadRequestException(
+          `Current discipline with id (${currentDisciplineId}) does not exist`,
+        );
+      }
+
+      updateDto.currentDiscipline = currentDiscipline;
+    }
+
+    if (teacherId) {
+      const teacher = await this.teachersService.findById(teacherId);
+
+      if (!teacher) {
+        throw new BadRequestException(
+          `Teacher with id (${teacherId}) does not exist`,
+        );
+      }
+
+      updateDto.teacher = teacher;
+    }
+
+    return this.disciplineTeachersService.update(Number(id), updateDto);
   }
 
   @Delete(':id')
