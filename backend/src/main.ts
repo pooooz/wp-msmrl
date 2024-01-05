@@ -48,8 +48,8 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Coupons service')
-    .setDescription('The coupons API description')
+    .setTitle('WP MSMRL')
+    .setDescription('WP MSMRL description')
     .setVersion('1.0')
     .build();
 

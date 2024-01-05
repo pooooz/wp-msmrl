@@ -16,7 +16,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { UsersService } from 'src/users/users.service';
 import { UserRole } from 'src/common/contracts';
 import { UserRoleGuard } from 'src/common/guards/user-role.guard';
 import { RequiredUserRoles } from 'src/common/decorators/user-role.decorator';
