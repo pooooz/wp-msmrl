@@ -34,14 +34,12 @@ import { ResultsModule } from './results/results.module';
 const DEFAULT_PORT = 4000;
 
 async function bootstrap() {
-  console.log('procces.env', process.env.PORT);
   const app = await NestFactory.create(AppModule, {
     // snapshot: true,
     // abortOnError: false,
   });
 
   const configService = app.get(ConfigService);
-  console.log('configService.get(port)', configService.get('port'));
 
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());

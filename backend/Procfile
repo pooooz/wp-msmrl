@@ -1,1 +1,1 @@
-web: echo $PORT && yarn workspace backend start
+web: yarn workspace backend start

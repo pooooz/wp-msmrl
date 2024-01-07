@@ -32,7 +32,6 @@ export class AuthController {
     @Body() authDto: AuthInputDto,
     @Res({ passthrough: true }) response: Response,
   ) {
-    console.log('HERE');
     const result = await this.authService.signIn(authDto);
 
     response.cookie('access_token', result.accessToken, {
