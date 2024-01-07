@@ -33,7 +33,6 @@ import { StudentsModule } from './students/students.module';
 import { Student } from './students/entities/student.entity';
 import { ResultsModule } from './results/results.module';
 import { Result } from './results/entities/result.entity';
-import { DevtoolsModule } from '@nestjs/devtools-integration';
 
 @Module({
   imports: [
@@ -41,21 +40,24 @@ import { DevtoolsModule } from '@nestjs/devtools-integration';
       isGlobal: true,
       load: [configuration],
     }),
-    MongooseModule.forRootAsync({
+    // MongooseModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: async (configService: ConfigService) => ({
+    //     uri: configService.get('mongodb').store,
+    //   }),
+    // }),
+    // EventLoggerModule,
+    TypeOrmModule.forRootAsync({
+      // imports: [ConfigModule, EventLoggerModule],
+      // inject: [ConfigService, EventLoggerService],
+
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get('mongodb').store,
-      }),
-    }),
-    EventLoggerModule,
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, EventLoggerModule],
-      inject: [ConfigService, EventLoggerService],
 
       useFactory: async (
         configService: ConfigService,
-        eventLoggerService: EventLoggerService,
+        // eventLoggerService: EventLoggerService,
       ) => {
         const postgresConfig = configService.get('postgres');
 
@@ -83,7 +85,7 @@ import { DevtoolsModule } from '@nestjs/devtools-integration';
           entities,
           synchronize: true,
           logging: ['query', 'error'],
-          logger: new DatabaseLogger(eventLoggerService),
+          // logger: new DatabaseLogger(eventLoggerService),
         };
       },
     }),
