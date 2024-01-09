@@ -3,7 +3,7 @@ import { LocalStorageItemsEnum } from '../constants/LocalStorageItemsEnum';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 
 const initialState = {
-  role: '',
+  role: localStorage.getItem(LocalStorageItemsEnum.Role) || '',
   isLoading: false,
   status: '',
   message: ''
@@ -22,12 +22,13 @@ export const userSlice = createSlice({
       state.isLoading = false;
     },
 
-    updateTokenFailid: (state) => {
+    updateTokenFailed: (state) => {
       state.role = initialState.role;
       state.status = ResponseStatusEnum.ERROR;
-      localStorage.removeItem(LocalStorageItemsEnum.TOKEN);
-      localStorage.removeItem(LocalStorageItemsEnum.ROLE);
-      localStorage.removeItem(LocalStorageItemsEnum.USER_ID);
+      localStorage.removeItem(LocalStorageItemsEnum.AccessToken);
+      localStorage.removeItem(LocalStorageItemsEnum.RefreshToken);
+      localStorage.removeItem(LocalStorageItemsEnum.Role);
+      localStorage.removeItem(LocalStorageItemsEnum.UserId);
       state.isLoading = false;
     },
 
@@ -40,7 +41,7 @@ export const userSlice = createSlice({
       state.isLoading = false;
     },
 
-    signInFailid: (state, action) => {
+    signInFailed: (state, action) => {
       state.role = initialState.role;
       state.status = ResponseStatusEnum.ERROR;
       state.message = action.payload.message;
@@ -49,9 +50,10 @@ export const userSlice = createSlice({
 
     logout: (state) => {
       state.role = initialState.role;
-      localStorage.removeItem(LocalStorageItemsEnum.TOKEN);
-      localStorage.removeItem(LocalStorageItemsEnum.ROLE);
-      localStorage.removeItem(LocalStorageItemsEnum.USER_ID);
+      localStorage.removeItem(LocalStorageItemsEnum.AccessToken);
+      localStorage.removeItem(LocalStorageItemsEnum.RefreshToken);
+      localStorage.removeItem(LocalStorageItemsEnum.Role);
+      localStorage.removeItem(LocalStorageItemsEnum.UserId);
     }
   }
 });
@@ -59,10 +61,10 @@ export const userSlice = createSlice({
 export const {
   updateToken,
   updateTokenSuccess,
-  updateTokenFailid,
+  updateTokenFailed,
   signIn,
   signInSuccess,
-  signInFailid,
+  signInFailed,
   logout
 } = userSlice.actions;
 

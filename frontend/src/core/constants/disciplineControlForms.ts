@@ -1,1 +1,1 @@
-export const disciplineControlForms = ['exam', 'credit', 'differentiated credit'];
+export const disciplineControlForms = ['Exam', 'Credit', 'DifferentiatedCredit'];

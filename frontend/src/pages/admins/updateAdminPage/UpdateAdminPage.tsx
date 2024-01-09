@@ -17,9 +17,9 @@ export const UpdateAdminPage = () => {
 
   const [updatedAdmin, setUpdatedAdmin] = useState({
     id: 0,
-    first_name: '',
-    patronumic: '',
-    last_name: '',
+    firstName: '',
+    patronymic: '',
+    lastName: '',
     login: '',
     password: ''
   });
@@ -29,9 +29,9 @@ export const UpdateAdminPage = () => {
       setUpdatedAdmin((prevState) => ({
         ...prevState,
         id: admin.id,
-        first_name: admin.first_name,
-        patronumic: admin.patronumic,
-        last_name: admin.last_name,
+        firstName: admin.firstName,
+        patronymic: admin.patronymic,
+        lastName: admin.lastName,
         login: admin.user.login
       }));
     }
@@ -61,8 +61,8 @@ export const UpdateAdminPage = () => {
           required
           id="lastName"
           label="Last Name"
-          name="last_name"
-          value={updatedAdmin.last_name}
+          name="lastName"
+          value={updatedAdmin.lastName}
           onChange={handleChange}
         />
         <TextField
@@ -70,16 +70,16 @@ export const UpdateAdminPage = () => {
           required
           id="firstName"
           label="First Name"
-          name="first_name"
-          value={updatedAdmin.first_name}
+          name="firstName"
+          value={updatedAdmin.firstName}
           onChange={handleChange}
         />
         <TextField
           margin="normal"
-          id="patronumic"
+          id="patronymic"
           label="Patronumic"
-          name="patronumic"
-          value={updatedAdmin.patronumic}
+          name="patronymic"
+          value={updatedAdmin.patronymic}
           onChange={handleChange}
         />
         <TextField

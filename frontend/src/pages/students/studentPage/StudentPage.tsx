@@ -27,7 +27,7 @@ export const StudentPage = () => {
   const rows = useMemo(() => {
     return results
       .map((result) => ({
-        discipline: result.task.current_discipline.discipline.name,
+        discipline: result.task.currentDiscipline.discipline.name,
         mark: result.mark,
         comment: result.comment,
         date: new Date(result.date).toLocaleDateString('ru-Ru', {

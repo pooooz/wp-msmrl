@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { DELETE, GET, POST } from '../api/requests';
 import {
-  actionFailid,
+  actionFailed,
   createDisciplineTeacher,
   createDisciplineTeacherSuccess,
   deleteDisciplineTeacher,
@@ -22,7 +22,7 @@ function* getCurrentDisciplinesByTeacherIdWorker({ payload }: any) {
 
     yield put(getCurrentDisciplinesByTeacherIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -33,7 +33,7 @@ function* getTeachersByCurrentDisciplineIdWorker({ payload }: any) {
     );
     yield put(getTeachersByCurrentDisciplineIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -42,7 +42,7 @@ function* createDisciplineTeacherWorker({ payload }: any) {
     const response: object = yield call(async () => await POST(DISCIPLINE_TEACHER_BASE_URL, payload));
     yield put(createDisciplineTeacherSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -51,7 +51,7 @@ function* deleteDisciplineTeacherWorker({ payload }: any) {
     const response: object = yield call(async () => await DELETE(`${DISCIPLINE_TEACHER_BASE_URL}/${payload}`));
     yield put(deleteDisciplineTeacherSuccess({ ...response, id: payload }));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 

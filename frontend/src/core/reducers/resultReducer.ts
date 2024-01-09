@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
+import { ResponseMessagesEnum } from '../constants/responseMessages';
 
 const initialState = {
   resultsByTask: [
@@ -9,7 +10,7 @@ const initialState = {
       mark: 0,
       comment: '',
       date: '',
-      student: { id: 0, first_name: '', patronumic: '', last_name: '' }
+      student: { id: 0, firstName: '', patronymic: '', lastName: '' }
     }
   ],
 
@@ -20,7 +21,7 @@ const initialState = {
       comment: '',
       date: '',
       task: {
-        current_discipline: { discipline: { name: '' }, year: NaN },
+        currentDiscipline: { discipline: { name: '' }, year: NaN },
         mandatory: true,
         name: ''
       }
@@ -31,8 +32,8 @@ const initialState = {
     mark: 0,
     comment: '',
     date: '',
-    student: { id: 0, first_name: '', patronumic: '', last_name: '' },
-    task: { id: 0, name: '', evaluation_scale: '', mandatory: true }
+    student: { id: 0, firstName: '', patronymic: '', lastName: '' },
+    task: { id: 0, name: '', evaluationScale: '', mandatory: true }
   },
   isLoading: false,
   status: '',
@@ -57,7 +58,7 @@ export const resultSlice = createSlice({
     },
 
     getResultsByTaskIdSuccess: (state, action) => {
-      state.resultsByTask = action.payload.results;
+      state.resultsByTask = action.payload;
       state.isLoading = false;
     },
 
@@ -66,7 +67,7 @@ export const resultSlice = createSlice({
     },
 
     getResultsByStudentIdSuccess: (state, action) => {
-      state.resultsByStudent = action.payload.results;
+      state.resultsByStudent = action.payload;
       state.isLoading = false;
     },
 
@@ -76,9 +77,9 @@ export const resultSlice = createSlice({
 
     createResultSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.RESULT_CREATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.RESULT_CREATED);
     },
 
     updateResult: (state, _) => {
@@ -87,9 +88,9 @@ export const resultSlice = createSlice({
 
     updateResultSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.RESULT_UPDATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.RESULT_UPDATED);
     },
 
     deleteResult: (state, _) => {
@@ -98,16 +99,16 @@ export const resultSlice = createSlice({
 
     deleteResultSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.RESULT_REMOVED;
       state.resultsByTask = state.resultsByTask.filter((result) => result.id !== action.payload.id);
       state.resultsByStudent = state.resultsByStudent.filter(
         (result) => result.id !== action.payload.id
       );
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.RESULT_REMOVED);
     },
 
-    actionFailid: (state, action) => {
+    actionFailed: (state, action) => {
       state.status = ResponseStatusEnum.ERROR;
       state.message = action.payload.message;
       state.isLoading = false;
@@ -129,7 +130,7 @@ export const {
   updateResultSuccess,
   deleteResult,
   deleteResultSuccess,
-  actionFailid
+  actionFailed
 } = resultSlice.actions;
 
 export default resultSlice.reducer;

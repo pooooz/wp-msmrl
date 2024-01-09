@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { DELETE, GET, PATCH, POST } from '../api/requests';
 import {
-  actionFailid,
+  actionFailed,
   createStudent,
   createStudentSuccess,
   deleteStudent,
@@ -23,7 +23,7 @@ function* getAllStudentsWorker() {
     const students: any[] = yield call(async () => await GET(STUDENT_BASE_URL));
     yield put(getAllStudentsSuccess(students));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -32,7 +32,7 @@ function* getStudentByIdWorker({ payload }: any) {
     const student: object = yield call(async () => await GET(`${STUDENT_BASE_URL}/${payload}`));
     yield put(getStudentByIdSuccess(student));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -41,7 +41,7 @@ function* getStudentsByTaskIdWorker({ payload }: any) {
     const response: object = yield call(async () => await GET(`${STUDENT_BASE_URL}/tasks/${payload}`));
     yield put(getStudentsByTaskIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -50,7 +50,7 @@ function* createStudentWorker({ payload }: any) {
     const response: object = yield call(async () => await POST(STUDENT_BASE_URL, payload));
     yield put(createStudentSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -60,7 +60,7 @@ function* updateStudentWorker({ payload }: any) {
     const response: object = yield call(async () => await PATCH(`${STUDENT_BASE_URL}/${id}`, rest));
     yield put(updateStudentSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -69,7 +69,7 @@ function* deleteStudentWorker({ payload }: any) {
     const response: object = yield call(async () => await DELETE(`${STUDENT_BASE_URL}/${payload}`));
     yield put(deleteStudentSuccess({ id: payload, response }));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 

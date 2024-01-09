@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
+import { ResponseMessagesEnum } from '../constants/responseMessages';
 
 const initialState = {
-  disciplines: [{ id: 0, name: '', control_form: '' }],
+  disciplines: [{ id: 0, name: '', controlForm: '' }],
   discipline: {
     id: 0,
     name: '',
-    control_form: ''
+    controlForm: ''
   },
   isLoading: false,
   status: '',
@@ -23,7 +24,7 @@ export const disciplineSlice = createSlice({
     },
 
     getAllDisciplinesSuccess: (state, action) => {
-      state.disciplines = action.payload.disciplines;
+      state.disciplines = action.payload;
       state.isLoading = false;
     },
 
@@ -32,7 +33,7 @@ export const disciplineSlice = createSlice({
     },
 
     getDisciplineByIdSuccess: (state, action) => {
-      state.discipline = action.payload.discipline;
+      state.discipline = action.payload;
       state.isLoading = false;
     },
 
@@ -42,9 +43,9 @@ export const disciplineSlice = createSlice({
 
     createDisciplineSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.DISCIPLINE_CREATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.DISCIPLINE_CREATED);
     },
 
     updateDiscipline: (state, _) => {
@@ -53,9 +54,9 @@ export const disciplineSlice = createSlice({
 
     updateDisciplineSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.DISCIPLINE_UPDATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.DISCIPLINE_UPDATED);
     },
 
     deleteDiscipline: (state, _) => {
@@ -64,15 +65,15 @@ export const disciplineSlice = createSlice({
 
     deleteDisciplineSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.DISCIPLINE_REMOVED;
       state.disciplines = state.disciplines.filter(
         (discipline) => discipline.id !== action.payload.id
       );
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.DISCIPLINE_REMOVED);
     },
 
-    actionFailid: (state, action) => {
+    actionFailed: (state, action) => {
       state.status = ResponseStatusEnum.ERROR;
       state.message = action.payload.message;
       state.isLoading = false;
@@ -92,7 +93,7 @@ export const {
   updateDisciplineSuccess,
   deleteDiscipline,
   deleteDisciplineSuccess,
-  actionFailid
+  actionFailed
 } = disciplineSlice.actions;
 
 export default disciplineSlice.reducer;

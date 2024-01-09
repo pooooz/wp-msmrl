@@ -44,7 +44,7 @@ export const TaskPage = () => {
   const rows = useMemo(() => {
     return results
       .map((result) => ({
-        student: `${result.student.last_name} ${result.student.first_name}`,
+        student: `${result.student.lastName} ${result.student.firstName}`,
         mark: result.mark,
         comment: result.comment,
         date: new Date(result.date).toLocaleDateString('ru-Ru', {
@@ -56,7 +56,7 @@ export const TaskPage = () => {
         }),
         actions: (
           <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-            {checkPermissions([UserRoleEnum.TEACHER]) && (
+            {checkPermissions([UserRoleEnum.Teacher]) && (
               <Button
                 variant="outlined"
                 color="warning"
@@ -65,7 +65,7 @@ export const TaskPage = () => {
                 Update
               </Button>
             )}
-            {checkPermissions([UserRoleEnum.TEACHER]) && (
+            {checkPermissions([UserRoleEnum.Teacher]) && (
               <Button
                 variant="outlined"
                 color="error"
@@ -87,7 +87,7 @@ export const TaskPage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.TEACHER]) && (
+      {checkPermissions([UserRoleEnum.Teacher]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button variant="contained" color="primary" sx={{ mt: 1 }} onClick={handleAddResult}>
             Add

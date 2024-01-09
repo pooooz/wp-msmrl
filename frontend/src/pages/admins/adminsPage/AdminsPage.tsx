@@ -10,9 +10,9 @@ import { deleteAdmin, getAllAdmins } from '../../../core/reducers/adminReducer';
 import { ADD_ADMIN_ROUTE, UPDATE_ADMIN_ROUTE } from '../../AppRoutes';
 
 const columns: TableColumns = [
-  { id: 'last_name', label: 'Last Name' },
-  { id: 'first_name', label: 'First Name' },
-  { id: 'patronumic', label: 'Patronumic' },
+  { id: 'lastName', label: 'Last Name' },
+  { id: 'firstName', label: 'First Name' },
+  { id: 'patronymic', label: 'Patronumic' },
   { id: 'actions', label: 'Actions' }
 ];
 
@@ -39,17 +39,18 @@ export const AdminsPage = () => {
 
   const rows = useMemo(() => {
     return admins.map((admin) => ({
-      first_name: admin.first_name,
-      patronumic: admin.patronumic,
-      last_name: admin.last_name,
+      id: admin.id,
+      firstName: admin.firstName,
+      patronymic: admin.patronymic,
+      lastName: admin.lastName,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button variant="outlined" color="warning" onClick={() => { handleUpdateAdmin(admin.id); }}>
               Update
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button variant="outlined" color="error" onClick={() => { handleDeleteAdmin(admin.id); }}>
               Delete
             </Button>
@@ -66,7 +67,7 @@ export const AdminsPage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button variant="contained" color="primary" sx={{ mt: 1 }} onClick={handleAddAdmin}>
             Add

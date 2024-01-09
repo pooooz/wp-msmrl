@@ -45,16 +45,17 @@ export const SpecializationPage = () => {
 
   const rows = useMemo(() => {
     return specialization.groups.map((group) => ({
+      id: group.id,
       name: group.name,
       course: group.course,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button variant="outlined" onClick={() => { handleOpenGroup(group.id); }}>
               Open
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button variant="outlined" color="error" onClick={() => { handleDeleteGroup(group.id); }}>
               Delete
             </Button>
@@ -70,7 +71,7 @@ export const SpecializationPage = () => {
         {specialization.name}
       </Typography>
       <Table columns={columns} rows={rows} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button variant="contained" color="primary" sx={{ mt: 1 }} onClick={handleAddGroup}>
             Add

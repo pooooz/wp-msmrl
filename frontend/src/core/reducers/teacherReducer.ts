@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
+import { ResponseMessagesEnum } from '../constants/responseMessages';
 
 const initialState = {
-  teachers: [{ id: 0, first_name: '', patronumic: '', last_name: '' }],
-  teacher: { id: 0, first_name: '', patronumic: '', last_name: '', user: { login: '' } },
+  teachers: [{ id: 0, firstName: '', patronymic: '', lastName: '' }],
+  teacher: { id: 0, firstName: '', patronymic: '', lastName: '', user: { login: '' } },
   isLoading: false,
   status: '',
   message: ''
@@ -19,7 +20,7 @@ export const teacherSlice = createSlice({
     },
 
     getAllTeachersSuccess: (state, action) => {
-      state.teachers = action.payload.teachers;
+      state.teachers = action.payload;
       state.isLoading = false;
     },
 
@@ -28,7 +29,7 @@ export const teacherSlice = createSlice({
     },
 
     getTeacherByIdSuccess: (state, action) => {
-      state.teacher = action.payload.teacher;
+      state.teacher = action.payload;
       state.isLoading = false;
     },
 
@@ -38,9 +39,9 @@ export const teacherSlice = createSlice({
 
     createTeacherSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.TEACHER_CREATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.TEACHER_CREATED);
     },
 
     updateTeacher: (state, _) => {
@@ -49,9 +50,9 @@ export const teacherSlice = createSlice({
 
     updateTeacherSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.TEACHER_UPDATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.TEACHER_UPDATED);
     },
 
     deleteTeacher: (state, _) => {
@@ -60,13 +61,13 @@ export const teacherSlice = createSlice({
 
     deleteTeacherSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.TEACHER_REMOVED;
       state.teachers = state.teachers.filter((teacher) => teacher.id !== action.payload.id);
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.TEACHER_REMOVED);
     },
 
-    actionFailid: (state, action) => {
+    actionFailed: (state, action) => {
       state.status = ResponseStatusEnum.ERROR;
       state.message = action.payload.message;
       state.isLoading = false;
@@ -86,7 +87,7 @@ export const {
   updateTeacherSuccess,
   deleteTeacher,
   deleteTeacherSuccess,
-  actionFailid
+  actionFailed
 } = teacherSlice.actions;
 
 export default teacherSlice.reducer;

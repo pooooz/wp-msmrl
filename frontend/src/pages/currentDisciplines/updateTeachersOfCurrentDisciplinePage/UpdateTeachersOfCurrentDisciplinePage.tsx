@@ -13,10 +13,10 @@ import {
 import { ADD_TEACHER_TO_CURRENT_DISCIPLINE_ROUTE } from '../../AppRoutes';
 
 const columns: TableColumns = [
-  { id: 'last_name', label: 'Last Name' },
-  { id: 'first_name', label: 'first Name' },
-  { id: 'patronumic', label: 'Patronumic' },
-  { id: 'form_of_conducting_classes', label: 'Form Of Conducing Classes' },
+  { id: 'lastName', label: 'Last Name' },
+  { id: 'firstName', label: 'first Name' },
+  { id: 'patronymic', label: 'Patronumic' },
+  { id: 'formOfConductingClasses', label: 'Form Of Conducing Classes' },
   { id: 'actions', label: 'Actions' }
 ];
 
@@ -30,8 +30,8 @@ export const UpdateTeachersOfCurrentDisciplinePage = () => {
     dispatch(getTeachersByCurrentDisciplineId(currentDisciplineId));
   }, []);
 
-  const discipline_teachers = useAppSelector(
-    (state) => state.discipline_teacher.discipline_teachers
+  const disciplineTeachers = useAppSelector(
+    (state) => state.discipline_teacher.disciplineTeachers
   );
 
   const handleDeleteDisciplineTeacher = (disciplineTeacherId: number) => {
@@ -46,14 +46,15 @@ export const UpdateTeachersOfCurrentDisciplinePage = () => {
   };
 
   const rows = useMemo(() => {
-    return discipline_teachers.map(({ id, teacher, form_of_conducting_classes }) => ({
-      first_name: teacher.first_name,
-      patronumic: teacher.patronumic,
-      last_name: teacher.last_name,
-      form_of_conducting_classes,
+    return disciplineTeachers.map(({ id, teacher, formOfConductingClasses }) => ({
+      id: teacher.id,
+      firstName: teacher.firstName,
+      patronymic: teacher.patronymic,
+      lastName: teacher.lastName,
+      formOfConductingClasses,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button
               variant="outlined"
               color="error"
@@ -65,12 +66,12 @@ export const UpdateTeachersOfCurrentDisciplinePage = () => {
         </Stack>
       )
     }));
-  }, [discipline_teachers]);
+  }, [disciplineTeachers]);
 
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button
             variant="contained"

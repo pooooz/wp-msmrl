@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { DELETE, GET, PATCH, POST } from '../api/requests';
 import {
-  actionFailid,
+  actionFailed,
   createTeacher,
   createTeacherSuccess,
   deleteTeacher,
@@ -21,7 +21,7 @@ function* getAllTeachersWorker() {
     const teachers: [] = yield call(async () => await GET(TEACHER_BASE_URL));
     yield put(getAllTeachersSuccess(teachers));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -30,7 +30,7 @@ function* getTeacherByIdWorker({ payload }: any) {
     const response: object = yield call(async () => await GET(`${TEACHER_BASE_URL}/${payload}`));
     yield put(getTeacherByIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -39,7 +39,7 @@ function* createTeacherWorker({ payload }: any) {
     const response: object = yield call(async () => await POST(TEACHER_BASE_URL, payload));
     yield put(createTeacherSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -49,7 +49,7 @@ function* updateTeacherWorker({ payload }: any) {
     const response: object = yield call(async () => await PATCH(`${TEACHER_BASE_URL}/${id}`, data));
     yield put(updateTeacherSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -58,7 +58,7 @@ function* deleteTeacherWorker({ payload }: any) {
     const response: object = yield call(async () => await DELETE(`${TEACHER_BASE_URL}/${payload}`));
     yield put(deleteTeacherSuccess({ ...response, id: payload }));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 

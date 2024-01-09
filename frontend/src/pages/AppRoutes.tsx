@@ -194,7 +194,7 @@ const teacherRoutes: Page[] = [
 
 export const AppRoutes = () => {
   const isLoadingAdmin = useAppSelector((state) => state.admin.isLoading);
-  const isLoadingCurrentDiscipline = useAppSelector((state) => state.current_discipline.isLoading);
+  const isLoadingCurrentDiscipline = useAppSelector((state) => state.currentDiscipline.isLoading);
   const isLoadingDiscipline = useAppSelector((state) => state.discipline.isLoading);
   const isLoadingDisciplineTeacher = useAppSelector((state) => state.discipline_teacher.isLoading);
   const isLoadingGroup = useAppSelector((state) => state.group.isLoading);
@@ -209,16 +209,16 @@ export const AppRoutes = () => {
 
   const { role, userId } = useMemo(
     () => ({
-      role: localStorage.getItem(LocalStorageItemsEnum.ROLE),
-      userId: localStorage.getItem(LocalStorageItemsEnum.USER_ID)
+      role: localStorage.getItem(LocalStorageItemsEnum.Role),
+      userId: localStorage.getItem(LocalStorageItemsEnum.UserId)
     }),
     [stateRole]
   );
 
   const routes = useMemo(() => {
-    if (role === UserRoleEnum.ADMIN) {
+    if (role === UserRoleEnum.Admin) {
       return adminRoutes;
-    } else if (role === UserRoleEnum.TEACHER) {
+    } else if (role === UserRoleEnum.Teacher) {
       return teacherRoutes.map((route) => {
         if (route.path === ANY_ROUTE) {
           const teacherFirstRoute = generatePath(TEACHER_ROUTE, {

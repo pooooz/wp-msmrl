@@ -17,7 +17,7 @@ export const AddGroupPage = () => {
 
   useEffect(() => {
     if (state && 'specializationId' in state) {
-      setGroup((prevState) => ({ ...prevState, specializationId: state.specializationId }));
+      setGroup((prevState) => ({ ...prevState, specializationId: Number.parseInt(state.specializationId) }));
     }
   }, []);
 
@@ -67,7 +67,7 @@ export const AddGroupPage = () => {
           <Select
             labelId="specialization-label"
             id="specialization-select"
-            value={group.specializationId.toString()}
+            value={group.specializationId}
             onChange={handleChangeSpecialization}
             label="Specialization"
           >

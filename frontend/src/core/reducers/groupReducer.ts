@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
+import { ResponseMessagesEnum } from '../constants/responseMessages';
 
 const initialState = {
   groups: [{ id: 0, name: '', course: 0, specialization: { id: 0, name: '' } }],
@@ -8,7 +9,7 @@ const initialState = {
     id: 0,
     name: '',
     course: 0,
-    students: [{ id: 0, first_name: '', patronumic: '', last_name: '' }],
+    students: [{ id: 0, firstName: '', patronymic: '', lastName: '' }],
     specialization: { id: 0, name: '' }
   },
   isLoading: false,
@@ -25,7 +26,7 @@ export const groupSlice = createSlice({
     },
 
     getAllGroupsSuccess: (state, action) => {
-      state.groups = action.payload.groups;
+      state.groups = action.payload;
       state.isLoading = false;
     },
 
@@ -34,7 +35,7 @@ export const groupSlice = createSlice({
     },
 
     getGroupByIdSuccess: (state, action) => {
-      state.group = action.payload.group;
+      state.group = action.payload;
       state.isLoading = false;
     },
 
@@ -44,9 +45,9 @@ export const groupSlice = createSlice({
 
     createGroupSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.GROUP_CREATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.GROUP_CREATED);
     },
 
     updateGroup: (state, _) => {
@@ -55,9 +56,9 @@ export const groupSlice = createSlice({
 
     updateGroupSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.GROUP_UPDATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.GROUP_UPDATED);
     },
 
     deleteGroup: (state, _) => {
@@ -66,13 +67,13 @@ export const groupSlice = createSlice({
 
     deleteGroupSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.response.message;
+      state.message = ResponseMessagesEnum.GROUP_REMOVED;
       state.groups = state.groups.filter((group) => group.id !== action.payload.id);
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.GROUP_REMOVED);
     },
 
-    actionFailid: (state, action) => {
+    actionFailed: (state, action) => {
       state.status = ResponseStatusEnum.ERROR;
       state.message = action.payload.message;
       state.isLoading = false;
@@ -92,7 +93,7 @@ export const {
   updateGroupSuccess,
   deleteGroup,
   deleteGroupSuccess,
-  actionFailid
+  actionFailed
 } = groupSlice.actions;
 
 export default groupSlice.reducer;

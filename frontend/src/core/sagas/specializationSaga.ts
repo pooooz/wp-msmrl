@@ -1,7 +1,7 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
 import { DELETE, GET, PATCH, POST } from '../api/requests';
 import {
-  actionFailid,
+  actionFailed,
   addSpecialization,
   addSpecializationSuccess,
   deleteSpecialization,
@@ -22,7 +22,7 @@ function* getAllSpecializationsWorker() {
 
     yield put(getAllSpecializationsSuccess(specializations));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -32,7 +32,7 @@ function* getSpecializationByIdWorker({ payload }: any) {
 
     yield put(getSpecializationByIdSuccess(specialization));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -41,7 +41,7 @@ function* addSpecializationWorker({ payload }: any) {
     const response: object = yield call(async () => await POST(SPECIALIZATION_BASE_URL, payload));
     yield put(addSpecializationSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -52,7 +52,7 @@ function* updateSpecializationWorker({ payload }: any) {
     );
     yield put(updateSpecializationSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -61,7 +61,7 @@ function* deleteSpecializationWorker({ payload }: any) {
     const response: object = yield call(async () => await DELETE(`${SPECIALIZATION_BASE_URL}/${payload}`));
     yield put(deleteSpecializationSuccess({ id: payload, response }));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 

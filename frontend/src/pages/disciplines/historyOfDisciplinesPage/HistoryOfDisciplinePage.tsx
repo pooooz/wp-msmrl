@@ -21,19 +21,20 @@ export const HistoryOfDisciplinePage = () => {
   }, []);
 
   const currentDisciplines = useAppSelector(
-    (state) => state.current_discipline.current_disciplines
+    (state) => state.currentDiscipline.currentDisciplines
   );
 
   const rows = useMemo(() => {
     return currentDisciplines
       .map((currentDiscipline) => ({
+        id: currentDiscipline.id,
         group: currentDiscipline.group.name,
         year: currentDiscipline.year,
-        teachers: currentDiscipline.discipline_teachers.map(({ teacher, form_of_conducting_classes }) => (
-          <div key={`${teacher.first_name}${teacher.last_name}${teacher.patronumic}`}>
-            {`${teacher.first_name} ${
-              teacher.last_name
-            } (${form_of_conducting_classes.toUpperCase()})`}
+        teachers: currentDiscipline.disciplineTeachers.map(({ teacher, formOfConductingClasses }) => (
+          <div key={`${teacher.firstName}${teacher.lastName}${teacher.patronymic}`}>
+            {`${teacher.firstName} ${
+              teacher.lastName
+            } (${formOfConductingClasses.toUpperCase()})`}
             <br />
           </div>
         ))

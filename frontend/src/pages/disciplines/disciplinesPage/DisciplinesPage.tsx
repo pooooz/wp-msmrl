@@ -11,7 +11,7 @@ import { ADD_DISCIPLINE_ROUTE, DISCIPLINE_ROUTE, UPDATE_DISCIPLINE_ROUTE } from 
 
 const columns: TableColumns = [
   { id: 'name', label: 'Name' },
-  { id: 'control_form', label: 'Control Form' },
+  { id: 'controlForm', label: 'Control Form' },
   { id: 'actions', label: 'Actions' }
 ];
 
@@ -25,7 +25,6 @@ export const DisciplinesPage = () => {
   }, []);
 
   useEffect(() => {
-    console.log(disciplines);
   }, [disciplines]);
 
   const handleOpenDiscipline = (disciplineId: number) => {
@@ -48,16 +47,17 @@ export const DisciplinesPage = () => {
 
   const rows = useMemo(() => {
     return disciplines.map((discipline) => ({
+      id: discipline.id,
       name: discipline.name,
-      control_form: discipline.control_form,
+      controlForm: discipline.controlForm,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button variant="outlined" onClick={() => { handleOpenDiscipline(discipline.id); }}>
               Open
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button
               variant="outlined"
               color="warning"
@@ -66,7 +66,7 @@ export const DisciplinesPage = () => {
               Update
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button
               variant="outlined"
               color="error"
@@ -89,7 +89,7 @@ export const DisciplinesPage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button variant="contained" color="primary" sx={{ mt: 1 }} onClick={handleAddDiscipline}>
             Add

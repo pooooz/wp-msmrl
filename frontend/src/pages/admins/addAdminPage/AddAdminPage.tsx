@@ -7,9 +7,9 @@ export const AddAdminPage = () => {
   const dispatch = useAppDispatch();
 
   const [admin, setAdmin] = useState({
-    first_name: '',
-    patronumic: '',
-    last_name: '',
+    firstName: '',
+    patronymic: '',
+    lastName: '',
     login: '',
     password: ''
   });
@@ -38,8 +38,8 @@ export const AddAdminPage = () => {
           required
           id="lastName"
           label="Last Name"
-          name="last_name"
-          value={admin.last_name}
+          name="lastName"
+          value={admin.lastName}
           onChange={handleChange}
         />
         <TextField
@@ -47,16 +47,16 @@ export const AddAdminPage = () => {
           required
           id="firstName"
           label="First Name"
-          name="first_name"
-          value={admin.first_name}
+          name="firstName"
+          value={admin.firstName}
           onChange={handleChange}
         />
         <TextField
           margin="normal"
-          id="patronumic"
+          id="patronymic"
           label="Patronumic"
-          name="patronumic"
-          value={admin.patronumic}
+          name="patronymic"
+          value={admin.patronymic}
           onChange={handleChange}
         />
         <TextField

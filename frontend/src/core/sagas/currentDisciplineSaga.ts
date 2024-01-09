@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { GET, POST } from '../api/requests';
 import {
-  actionFailid,
+  actionFailed,
   createCurrentDiscipline,
   createCurrentDisciplineSuccess,
   getCurrentDisciplineById,
@@ -12,45 +12,45 @@ import {
   getCurrentDisciplinesByDisciplineIdSuccess
 } from '../reducers/currentDisciplineReducer';
 
-const CURRENT_DISCIPLINES_BASE_URL = '/currentDisciplines';
+const currentDisciplines_BASE_URL = '/currentDisciplines';
 
 function* getCurrentDisciplineByIdWorker({ payload }: any) {
   try {
-    const response: object = yield call(async () => await GET(`${CURRENT_DISCIPLINES_BASE_URL}/${payload}`));
+    const response: object = yield call(async () => await GET(`${currentDisciplines_BASE_URL}/${payload}`));
     yield put(getCurrentDisciplineByIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
 function* getCurrentDisciplinesByDisciplineIdInThisYearWorker({ payload }: any) {
   try {
     const response: object = yield call(async () =>
-      await GET(`${CURRENT_DISCIPLINES_BASE_URL}/disciplines/${payload}?year=${new Date().getFullYear()}`)
+      await GET(`${currentDisciplines_BASE_URL}/disciplines/${payload}?year=${new Date().getFullYear()}`)
     );
     yield put(getCurrentDisciplinesByDisciplineIdInThisYearSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
 function* getCurrentDisciplinesByDisciplineIdWorker({ payload }: any) {
   try {
     const response: object = yield call(async () =>
-      await GET(`${CURRENT_DISCIPLINES_BASE_URL}/disciplines/${payload}`)
+      await GET(`${currentDisciplines_BASE_URL}/disciplines/${payload}`)
     );
     yield put(getCurrentDisciplinesByDisciplineIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
 function* createCurrentDisciplineWorker({ payload }: any) {
   try {
-    const response: object = yield call(async () => await POST(CURRENT_DISCIPLINES_BASE_URL, payload));
+    const response: object = yield call(async () => await POST(currentDisciplines_BASE_URL, payload));
     yield put(createCurrentDisciplineSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 

@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { DELETE, GET, PATCH, POST } from '../api/requests';
 import {
-  actionFailid,
+  actionFailed,
   createResult,
   createResultSuccess,
   deleteResult,
@@ -23,7 +23,7 @@ function* getResultByIdWorker({ payload }: any) {
     const response: object = yield call(async () => await GET(`${RESULT_BASE_URL}/${payload}`));
     yield put(getResultByIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -32,7 +32,7 @@ function* getResultsByTaskIdWorker({ payload }: any) {
     const response: object = yield call(async () => await GET(`${RESULT_BASE_URL}/tasks/${payload}`));
     yield put(getResultsByTaskIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -41,7 +41,7 @@ function* getResultsByStudentIdWorker({ payload }: any) {
     const response: object = yield call(async () => await GET(`${RESULT_BASE_URL}/students/${payload}`));
     yield put(getResultsByStudentIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -50,7 +50,7 @@ function* createResultWorker({ payload }: any) {
     const response: object = yield call(async () => await POST(RESULT_BASE_URL, payload));
     yield put(createResultSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -60,7 +60,7 @@ function* updateResultWorker({ payload }: any) {
     const response: object = yield call(async () => await PATCH(`${RESULT_BASE_URL}/${id}`, data));
     yield put(updateResultSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -69,7 +69,7 @@ function* deleteResultWorker({ payload }: any) {
     const response: object = yield call(async () => await DELETE(`${RESULT_BASE_URL}/${payload}`));
     yield put(deleteResultSuccess({ ...response, id: payload }));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 

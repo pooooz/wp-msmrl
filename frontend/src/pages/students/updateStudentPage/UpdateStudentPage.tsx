@@ -20,9 +20,9 @@ export const UpdateStudentPage = () => {
 
   const [updatedStudent, setUpdatedStudent] = useState({
     id: 0,
-    first_name: '',
-    patronumic: '',
-    last_name: '',
+    firstName: '',
+    patronymic: '',
+    lastName: '',
     groupId: 0
   });
 
@@ -31,9 +31,9 @@ export const UpdateStudentPage = () => {
       setUpdatedStudent((prevState) => ({
         ...prevState,
         id: student.id,
-        first_name: student.first_name,
-        patronumic: student.patronumic,
-        last_name: student.last_name,
+        firstName: student.firstName,
+        patronymic: student.patronymic,
+        lastName: student.lastName,
         groupId: student.group.id
       }));
     }
@@ -87,8 +87,8 @@ export const UpdateStudentPage = () => {
           required
           id="lastName"
           label="Last Name"
-          name="last_name"
-          value={updatedStudent.last_name}
+          name="lastName"
+          value={updatedStudent.lastName}
           onChange={handleChangeName}
         />
         <TextField
@@ -96,16 +96,16 @@ export const UpdateStudentPage = () => {
           required
           id="firstName"
           label="First Name"
-          name="first_name"
-          value={updatedStudent.first_name}
+          name="firstName"
+          value={updatedStudent.firstName}
           onChange={handleChangeName}
         />
         <TextField
           margin="normal"
-          id="patronumic"
+          id="patronymic"
           label="Patronumic"
-          name="patronumic"
-          value={updatedStudent.patronumic}
+          name="patronymic"
+          value={updatedStudent.patronymic}
           onChange={handleChangeName}
         />
         <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>

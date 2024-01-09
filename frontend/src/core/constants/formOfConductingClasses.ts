@@ -1,1 +1,1 @@
-export const formOfConductingClasses = ['lecture', 'laboratory', 'practice'];
+export const formOfConductingClasses = ['Lecture', 'Laboratory', 'Practice'];
