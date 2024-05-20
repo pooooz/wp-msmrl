@@ -1,5 +1,6 @@
 export enum LocalStorageItemsEnum {
-  TOKEN = 'token',
-  ROLE = 'role',
-  USER_ID = 'userId',
+  AccessToken = 'AccessToken',
+  RefreshToken = 'RefreshToken',
+  Role = 'Role',
+  UserId = 'UserId',
 }

@@ -12,7 +12,7 @@ import { ADD_STUDENT_ROUTE, STUDENT_ROUTE, UPDATE_STUDENT_ROUTE } from '../../Ap
 const columns: TableColumns = [
   { id: 'lastName', label: 'LastName' },
   { id: 'firstName', label: 'First Name' },
-  { id: 'patronumic', label: 'Patronumic' },
+  { id: 'patronymic', label: 'Patronumic' },
   { id: 'actions', label: 'Actions' }
 ];
 
@@ -50,17 +50,17 @@ export const StudentsPage = () => {
 
   const rows = useMemo(() => {
     return students.map((student) => ({
-      firstName: student.first_name,
-      patronumic: student.patronumic,
-      lastName: student.last_name,
+      firstName: student.firstName,
+      patronymic: student.patronymic,
+      lastName: student.lastName,
       actions: (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          {checkPermissions([UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && (
+          {checkPermissions([UserRoleEnum.Admin, UserRoleEnum.Teacher]) && (
             <Button variant="outlined" onClick={() => { handleOpenStudent(student.id); }}>
               Open
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button
               variant="outlined"
               color="warning"
@@ -69,7 +69,7 @@ export const StudentsPage = () => {
               Update
             </Button>
           )}
-          {checkPermissions([UserRoleEnum.ADMIN]) && (
+          {checkPermissions([UserRoleEnum.Admin]) && (
             <Button
               variant="outlined"
               color="error"
@@ -86,7 +86,7 @@ export const StudentsPage = () => {
   return (
     <>
       <Table rows={rows} columns={columns} />
-      {checkPermissions([UserRoleEnum.ADMIN]) && (
+      {checkPermissions([UserRoleEnum.Admin]) && (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           <Button variant="contained" color="primary" sx={{ mt: 1 }} onClick={handleAddStudent}>
             Add

@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { DELETE, GET, PATCH, POST } from '../api/requests';
 import {
-  actionFailid,
+  actionFailed,
   createDiscipline,
   createDisciplineSuccess,
   deleteDiscipline,
@@ -21,7 +21,7 @@ function* getAllDisciplinesWorker() {
     const disciplines: [] = yield call(async () => await GET(DISCIPLINE_BASE_URL));
     yield put(getAllDisciplinesSuccess(disciplines));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -30,7 +30,7 @@ function* getDisciplineByIdWorker({ payload }: any) {
     const response: object = yield call(async () => await GET(`${DISCIPLINE_BASE_URL}/${payload}`));
     yield put(getDisciplineByIdSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -39,7 +39,7 @@ function* createDisciplineWorker({ payload }: any) {
     const response: object = yield call(async () => await POST(DISCIPLINE_BASE_URL, payload));
     yield put(createDisciplineSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -47,9 +47,9 @@ function* updateDisciplineWorker({ payload }: any) {
   try {
     const { id, ...data } = payload;
     const response: object = yield call(async () => await PATCH(`${DISCIPLINE_BASE_URL}/${id}`, data));
-    put(updateDisciplineSuccess(response));
+    yield put(updateDisciplineSuccess(response));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 
@@ -58,7 +58,7 @@ function* deleteDisciplineWorker({ payload }: any) {
     const response: object = yield call(async () => await DELETE(`${DISCIPLINE_BASE_URL}/${payload}`));
     yield put(deleteDisciplineSuccess({ id: payload, ...response }));
   } catch (err) {
-    yield put(actionFailid(err));
+    yield put(actionFailed(err));
   }
 }
 

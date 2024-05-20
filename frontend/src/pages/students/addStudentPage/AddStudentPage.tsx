@@ -11,9 +11,9 @@ export const AddStudentPage = () => {
   const { state }: any = useLocation();
 
   const [student, setStudent] = useState({
-    first_name: '',
-    patronumic: '',
-    last_name: '',
+    firstName: '',
+    patronymic: '',
+    lastName: '',
     groupId: NaN
   });
 
@@ -73,8 +73,8 @@ export const AddStudentPage = () => {
           required
           id="lastName"
           label="Last Name"
-          name="last_name"
-          value={student.last_name}
+          name="lastName"
+          value={student.lastName}
           onChange={handleChangeName}
         />
         <TextField
@@ -82,16 +82,16 @@ export const AddStudentPage = () => {
           required
           id="firstName"
           label="First Name"
-          name="first_name"
-          value={student.first_name}
+          name="firstName"
+          value={student.firstName}
           onChange={handleChangeName}
         />
         <TextField
           margin="normal"
-          id="patronumic"
+          id="patronymic"
           label="Patronumic"
-          name="patronumic"
-          value={student.patronumic}
+          name="patronymic"
+          value={student.patronymic}
           onChange={handleChangeName}
         />
         <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>

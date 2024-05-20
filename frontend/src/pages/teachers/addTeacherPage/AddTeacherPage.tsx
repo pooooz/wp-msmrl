@@ -7,9 +7,9 @@ export const AddTeacherPage = () => {
   const dispatch = useAppDispatch();
 
   const [teacher, setTeacher] = useState({
-    first_name: '',
-    patronumic: '',
-    last_name: '',
+    firstName: '',
+    patronymic: '',
+    lastName: '',
     login: '',
     password: ''
   });
@@ -38,8 +38,8 @@ export const AddTeacherPage = () => {
           required
           id="lastName"
           label="Last Name"
-          name="last_name"
-          value={teacher.last_name}
+          name="lastName"
+          value={teacher.lastName}
           onChange={handleChange}
         />
         <TextField
@@ -47,16 +47,16 @@ export const AddTeacherPage = () => {
           required
           id="firstName"
           label="First Name"
-          name="first_name"
-          value={teacher.first_name}
+          name="firstName"
+          value={teacher.firstName}
           onChange={handleChange}
         />
         <TextField
           margin="normal"
-          id="patronumic"
+          id="patronymic"
           label="Patronumic"
-          name="patronumic"
-          value={teacher.patronumic}
+          name="patronymic"
+          value={teacher.patronymic}
           onChange={handleChange}
         />
         <TextField

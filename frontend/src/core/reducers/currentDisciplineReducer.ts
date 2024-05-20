@@ -1,25 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ResponseStatusEnum } from '../constants/ResponseStatusEnum';
 import { showToast } from '../functions/showToast';
+import { ResponseMessagesEnum } from '../constants/responseMessages';
 
 const initialState = {
-  current_disciplines: [
+  currentDisciplines: [
     {
       id: 0,
       year: 0,
       group: { id: 0, name: '', course: 0 },
-      discipline_teachers: [
+      disciplineTeachers: [
         {
-          form_of_conducting_classes: '',
-          teacher: { id: 0, first_name: '', patronumic: '', last_name: '' }
+          formOfConductingClasses: '',
+          teacher: { id: 0, firstName: '', patronymic: '', lastName: '' }
         }
       ]
     }
   ],
-  current_discipline: {
+  currentDiscipline: {
     id: 0,
     year: 0,
-    tasks: [{ id: 0, name: '', evaluation_scale: '', mandatory: false }]
+    tasks: [{ id: 0, name: '', evaluationScale: '', mandatory: false }]
   },
   isLoading: false,
   status: '',
@@ -35,7 +36,7 @@ export const currentDisciplineSlice = createSlice({
     },
 
     getCurrentDisciplineByIdSuccess: (state, action) => {
-      state.current_discipline = action.payload.current_discipline;
+      state.currentDiscipline = action.payload;
       state.isLoading = false;
     },
 
@@ -44,7 +45,7 @@ export const currentDisciplineSlice = createSlice({
     },
 
     getCurrentDisciplinesByDisciplineIdInThisYearSuccess: (state, action) => {
-      state.current_disciplines = action.payload.current_disciplines;
+      state.currentDisciplines = action.payload;
       state.isLoading = false;
     },
 
@@ -53,7 +54,7 @@ export const currentDisciplineSlice = createSlice({
     },
 
     getCurrentDisciplinesByDisciplineIdSuccess: (state, action) => {
-      state.current_disciplines = action.payload.current_disciplines;
+      state.currentDisciplines = action.payload;
       state.isLoading = false;
     },
 
@@ -63,12 +64,12 @@ export const currentDisciplineSlice = createSlice({
 
     createCurrentDisciplineSuccess: (state, action) => {
       state.status = ResponseStatusEnum.OK;
-      state.message = action.payload.message;
+      state.message = ResponseMessagesEnum.CURRENT_DISCIPLINE_CREATED;
       state.isLoading = false;
-      showToast(ResponseStatusEnum.OK, action.payload.message);
+      showToast(ResponseStatusEnum.OK, ResponseMessagesEnum.CURRENT_DISCIPLINE_CREATED);
     },
 
-    actionFailid: (state, action) => {
+    actionFailed: (state, action) => {
       state.status = ResponseStatusEnum.ERROR;
       state.message = action.payload.message;
       state.isLoading = false;
@@ -86,7 +87,7 @@ export const {
   getCurrentDisciplinesByDisciplineIdSuccess,
   createCurrentDiscipline,
   createCurrentDisciplineSuccess,
-  actionFailid
+  actionFailed
 } = currentDisciplineSlice.actions;
 
 export default currentDisciplineSlice.reducer;

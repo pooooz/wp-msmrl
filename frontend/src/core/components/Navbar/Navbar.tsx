@@ -70,9 +70,9 @@ const Navbar = () => {
   const role = useAppSelector((state) => state.user.role);
 
   const pages = useMemo(() => {
-    if (role === UserRoleEnum.ADMIN) {
+    if (role === UserRoleEnum.Admin) {
       return adminPages;
-    } else if (role === UserRoleEnum.TEACHER) {
+    } else if (role === UserRoleEnum.Teacher) {
       return teacherPages;
     } else {
       return [];

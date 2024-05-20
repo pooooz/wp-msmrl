@@ -13,7 +13,7 @@ export const AddTaskPage = () => {
 
   useEffect(() => {
     if (state && 'currentDisciplineId' in state) {
-      setTask((prevState) => ({ ...prevState, currentDisciplineId: state.currentDisciplineId }));
+      setTask((prevState) => ({ ...prevState, currentDisciplineId: Number(state.currentDisciplineId) }));
     }
   }, []);
 
