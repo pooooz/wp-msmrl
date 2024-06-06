@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import Navbar from './core/components/Navbar/Navbar';
 import { useAppDispatch, useAppSelector } from './core/hooks/redux';
 import { updateToken } from './core/reducers/userReducer';
 import { AppRoutes } from './pages/AppRoutes';
+import { DefaultTemplate } from './templates/DefaultTemplate';
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -16,8 +16,14 @@ export const App = () => {
 
   return (
     <BrowserRouter>
-      {role && <Navbar />}
-      <AppRoutes />
+      {role
+        ? (
+            <DefaultTemplate>
+              <AppRoutes />
+            </DefaultTemplate>
+          )
+        : <AppRoutes />
+      }
     </BrowserRouter>
   );
 };

@@ -1,8 +1,10 @@
-import { Box, Button, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../core/hooks/redux';
 import { getTeacherById, updateTeacher } from '../../../core/reducers/teacherReducer';
+import { TextFieldGroupProps } from '../../../molecules/TextFieldGroup';
+import { fieldLabels } from '../constants';
+import { TextFieldForm } from '../../../organisms/TextFieldForm';
 
 export const UpdateTeacherPage = () => {
   const dispatch = useAppDispatch();
@@ -47,63 +49,25 @@ export const UpdateTeacherPage = () => {
     setUpdatedTeacher((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
   };
 
+  const fields: TextFieldGroupProps['fields'] = useMemo(() => {
+    return Object.keys(updatedTeacher).reduce((acc, key) => {
+      const required = key !== 'patronymic';
+      return {
+        ...acc,
+        [key]: {
+          required,
+          id: key,
+          name: key,
+          value: updatedTeacher[key as keyof typeof updatedTeacher],
+          onChange: handleChange,
+          label: fieldLabels[key as keyof typeof fieldLabels],
+          margin: 'normal'
+        }
+      }; ;
+    }, {});
+  }, [teacher, updatedTeacher]);
+
   return (
-    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}
-      >
-        <TextField
-          margin="normal"
-          required
-          id="lastName"
-          label="Last Name"
-          name="lastName"
-          value={updatedTeacher.lastName}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          required
-          id="firstName"
-          label="First Name"
-          name="firstName"
-          value={updatedTeacher.firstName}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          id="patronymic"
-          label="Patronumic"
-          name="patronymic"
-          value={updatedTeacher.patronymic}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          required
-          id="login"
-          label="Login"
-          name="login"
-          value={updatedTeacher.login}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          id="password"
-          label="Password"
-          name="password"
-          value={updatedTeacher.password}
-          onChange={handleChange}
-        />
-        <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Update
-        </Button>
-      </Box>
-    </Box>
+    <TextFieldForm fields={fields} onSubmit={handleSubmit} buttonText="Update"/>
   );
 };

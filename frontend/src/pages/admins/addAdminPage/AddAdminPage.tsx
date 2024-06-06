@@ -1,7 +1,10 @@
-import { Box, Button, TextField } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../../core/hooks/redux';
 import { createAdmin } from '../../../core/reducers/adminReducer';
+import { TextFieldForm } from '../../../organisms/TextFieldForm';
+import { TextFieldGroupProps } from '../../../molecules/TextFieldGroup';
+import { fieldLabels } from '../../teachers/constants';
 
 export const AddAdminPage = () => {
   const dispatch = useAppDispatch();
@@ -23,6 +26,21 @@ export const AddAdminPage = () => {
     setAdmin((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
   };
 
+  const fields: TextFieldGroupProps['fields'] = Object.keys(admin).reduce((acc, key) => {
+    const required = key !== 'patronymic';
+    return {
+      ...acc,
+      [key]: {
+        required,
+        id: key,
+        name: key,
+        value: admin[key as keyof typeof admin],
+        onChange: handleChange,
+        label: fieldLabels[key as keyof typeof fieldLabels]
+      }
+    }; ;
+  }, {});
+
   return (
     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
       <Box
@@ -33,53 +51,7 @@ export const AddAdminPage = () => {
           alignItems: 'center'
         }}
       >
-        <TextField
-          margin="normal"
-          required
-          id="lastName"
-          label="Last Name"
-          name="lastName"
-          value={admin.lastName}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          required
-          id="firstName"
-          label="First Name"
-          name="firstName"
-          value={admin.firstName}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          id="patronymic"
-          label="Patronumic"
-          name="patronymic"
-          value={admin.patronymic}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          required
-          id="login"
-          label="Login"
-          name="login"
-          value={admin.login}
-          onChange={handleChange}
-        />
-        <TextField
-          margin="normal"
-          required
-          id="password"
-          label="Password"
-          name="password"
-          value={admin.password}
-          onChange={handleChange}
-        />
-        <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Add
-        </Button>
+        <TextFieldForm fields={fields} onSubmit={handleSubmit} buttonText="Add"/>
       </Box>
     </Box>
   );
