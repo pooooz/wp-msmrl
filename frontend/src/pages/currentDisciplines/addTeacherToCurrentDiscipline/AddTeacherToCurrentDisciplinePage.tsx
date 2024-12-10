@@ -18,7 +18,7 @@ export const AddTeacherToCurrentDisciplinePage = () => {
   const teachers = useAppSelector((state) => state.teacher.teachers);
 
   const [disciplineTeacher, setDisciplineTeacher] = useState({
-    currentDisciplineId,
+    currentDisciplineId: parseInt(currentDisciplineId || ''),
     teacherId: NaN,
     formOfConductingClasses: ''
   });
