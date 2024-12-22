@@ -6,6 +6,7 @@ import { CurrentDisciplinesController } from './current-disciplines.controller';
 import { CurrentDisciplinesService } from './current-disciplines.service';
 import { DisciplinesModule } from 'src/disciplines/disciplines.module';
 import { GroupsModule } from 'src/groups/group.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [

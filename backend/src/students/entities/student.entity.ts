@@ -31,6 +31,14 @@ export class Student {
   @ManyToOne(() => Group, (group) => group.students)
   group: Group;
 
-  @OneToMany(() => Result, (result) => result.student)
+  @OneToMany(() => Result, (result) => result.studentId)
   results: Array<Result>;
+}
+
+export interface GetStudentResponseData {
+  id: number;
+  firstName: string;
+  lastName: string;
+  patronymic: string;
+  groupId: number;
 }

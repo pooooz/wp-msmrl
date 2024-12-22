@@ -27,6 +27,8 @@ export const AddResultPage = () => {
 
   const task = useAppSelector((state) => state.task.task);
 
+  console.log({ task, students });
+
   const dropdownStudentItems = useMemo(() => {
     return students.map((student) => (
       <MenuItem

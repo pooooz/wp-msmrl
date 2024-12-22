@@ -37,10 +37,10 @@ export class DisciplinesController {
     description: 'Discipline created',
     type: Discipline,
   })
-  create(
-    @Body() createDisciplineInputDto: CreateDisciplineInputDto,
-  ): Promise<Discipline> {
-    return this.disciplinesService.create(createDisciplineInputDto);
+  async create(@Body() createDisciplineInputDto: CreateDisciplineInputDto) {
+    await this.disciplinesService.create(createDisciplineInputDto);
+
+    return { message: 'Created' };
   }
 
   @Get()
@@ -67,15 +67,15 @@ export class DisciplinesController {
     return this.disciplinesService.findById(Number(id));
   }
 
-  @Patch(':id')
-  @RequiredUserRoles(UserRole.Admin)
-  @ApiOperation({ summary: 'Update discipline' })
-  update(
-    @Param('id') id: string,
-    @Body() updateDisciplineInputDto: UpdateDisciplineInputDto,
-  ) {
-    return this.disciplinesService.update(Number(id), updateDisciplineInputDto);
-  }
+  // @Patch(':id')
+  // @RequiredUserRoles(UserRole.Admin)
+  // @ApiOperation({ summary: 'Update discipline' })
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateDisciplineInputDto: UpdateDisciplineInputDto,
+  // ) {
+  //   return this.disciplinesService.update(Number(id), updateDisciplineInputDto);
+  // }
 
   @Delete(':id')
   @RequiredUserRoles(UserRole.Admin)

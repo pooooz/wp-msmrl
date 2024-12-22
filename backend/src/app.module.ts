@@ -84,7 +84,7 @@ import { Result } from './results/entities/result.entity';
           database: postgresConfig.database,
           entities,
           synchronize: true,
-          logging: ['query', 'error'],
+          // logging: ['query', 'error'],
           // logger: new DatabaseLogger(eventLoggerService),
         };
       },

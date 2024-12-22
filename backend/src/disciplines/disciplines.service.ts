@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Discipline } from './entities/discipline.entity';
-import { BaseTypeORMService } from 'src/common/services/base-typeorm.service';
+import { GetDisciplineResponseData } from './entities/discipline.entity';
+import { BaseHttpService } from 'src/common/services/base-http.service';
+import { ConfigService } from '@nestjs/config';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
-export class DisciplinesService extends BaseTypeORMService<Discipline> {
-  constructor(
-    @InjectRepository(Discipline) disciplineRepository: Repository<Discipline>,
-  ) {
-    super(disciplineRepository);
+export class DisciplinesService extends BaseHttpService<GetDisciplineResponseData> {
+  constructor(httpService: HttpService, configService: ConfigService) {
+    super(httpService, configService, 'disciplines');
   }
 }

@@ -6,12 +6,14 @@ import { ResultsController } from './results.controller';
 import { ResultsService } from './results.service';
 import { StudentsModule } from 'src/students/students.module';
 import { TasksModule } from 'src/tasks/tasks.module';
+import { DisciplinesModule } from 'src/disciplines/disciplines.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ResultEnity]),
     StudentsModule,
     TasksModule,
+    DisciplinesModule,
   ],
   controllers: [ResultsController],
   providers: [ResultsService],

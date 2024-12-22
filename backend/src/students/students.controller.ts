@@ -8,6 +8,8 @@ import {
   Delete,
   BadRequestException,
   UseGuards,
+  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -24,7 +26,8 @@ import { GroupsService } from 'src/groups/group.service';
 import { CreateStudentInputDto } from './dto/create-student.dto';
 import { Student } from './entities/student.entity';
 import { UpdateStudentInputDto } from './dto/update-student.dto';
-import { DeepPartial } from 'typeorm';
+import { DeepPartial, In } from 'typeorm';
+import { NotFoundError } from 'rxjs';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -44,9 +47,7 @@ export class StudentsController {
     description: 'Student created',
     type: Student,
   })
-  async create(
-    @Body() createStudentInputDto: CreateStudentInputDto,
-  ): Promise<Student> {
+  async create(@Body() createStudentInputDto: CreateStudentInputDto) {
     const group = await this.groupsService.findById(
       createStudentInputDto.groupId,
     );
@@ -57,7 +58,9 @@ export class StudentsController {
       );
     }
 
-    return this.studentsService.create(createStudentInputDto, group);
+    await this.studentsService.create(createStudentInputDto, group);
+
+    return { message: 'Created' };
   }
 
   @Get()
@@ -68,10 +71,28 @@ export class StudentsController {
     description: 'All students',
     type: Array<Student>,
   })
-  findAll() {
-    return this.studentsService.findAll({
-      group: true,
-    });
+  async findAll() {
+    const students = await this.studentsService.findAll();
+
+    const groupIds = new Set(students.map((student) => student.groupId));
+    const groups = await this.groupsService.find({ id: In([...groupIds]) });
+
+    const resolvedStudents = [];
+    for await (const student of students) {
+      const correspondingGroup = groups.find(
+        (group) => group.id === student.groupId,
+      );
+
+      if (!correspondingGroup) {
+        throw new BadRequestException(
+          `Student with id (${student.id}) does not have group. Group id (${student.groupId})`,
+        );
+      }
+
+      resolvedStudents.push({ ...student, group: correspondingGroup });
+    }
+
+    return resolvedStudents;
   }
 
   @Get(':id')
@@ -82,8 +103,24 @@ export class StudentsController {
     description: 'Find student by id',
     type: Student,
   })
-  findOne(@Param('id') id: string) {
-    return this.studentsService.findById(Number(id), { group: true });
+  async findOne(@Param('id') id: string) {
+    const student = await this.studentsService.findById(Number(id));
+    if (!student) {
+      throw new NotFoundException();
+    }
+
+    const correspondingGroup = await this.groupsService.findById(
+      student?.groupId,
+    );
+
+    if (!correspondingGroup) {
+      throw new InternalServerErrorException('Student without group');
+    }
+
+    return {
+      ...student,
+      group: correspondingGroup,
+    };
   }
 
   @Get('/tasks/:taskId')
@@ -94,46 +131,67 @@ export class StudentsController {
     description: 'Find students by task id',
     type: Student,
   })
-  findByTaskId(@Param('taskId') taskId: string) {
-    return this.studentsService.find(
+  async findByTaskId(@Param('taskId') taskId: string) {
+    const groups = await this.groupsService.find(
       {
-        group: {
-          currentDisciplines: {
-            tasks: { id: Number(taskId) },
-          },
+        currentDisciplines: {
+          tasks: { id: Number(taskId) },
         },
       },
-      { group: true },
+      { students: true },
     );
+
+    const groupId = groups[0].id;
+
+    const students = await this.studentsService.findAll();
+
+    const filteredStudents = students.filter(
+      (student) => student.groupId === groupId,
+    );
+
+    return filteredStudents;
+
+    // return this.studentsService.find(
+    //   {
+    //     group: {
+    //       currentDisciplines: {
+    //         tasks: { id: Number(taskId) },
+    //       },
+    //     },
+    //   },
+    //   { group: true },
+    // );
   }
 
-  @Patch(':id')
-  @RequiredUserRoles(UserRole.Admin)
-  async update(
-    @Param('id') id: string,
-    @Body() updateStudentInputDto: UpdateStudentInputDto,
-  ) {
-    const { groupId, ...updateStudentInputDtoRest } = updateStudentInputDto;
-    const udpateDto: DeepPartial<Student> = { ...updateStudentInputDtoRest };
+  // @Patch(':id')
+  // @RequiredUserRoles(UserRole.Admin)
+  // async update(
+  //   @Param('id') id: string,
+  //   @Body() updateStudentInputDto: UpdateStudentInputDto,
+  // ) {
+  //   const { groupId, ...updateStudentInputDtoRest } = updateStudentInputDto;
+  //   const udpateDto: DeepPartial<Student> = { ...updateStudentInputDtoRest };
 
-    if (groupId) {
-      const group = await this.groupsService.findById(groupId);
+  //   if (groupId) {
+  //     const group = await this.groupsService.findById(groupId);
 
-      if (!group) {
-        throw new BadRequestException(
-          `Group with id (${groupId}) does not exist`,
-        );
-      }
+  //     if (!group) {
+  //       throw new BadRequestException(
+  //         `Group with id (${groupId}) does not exist`,
+  //       );
+  //     }
 
-      udpateDto.group = group;
-    }
+  //     udpateDto.group = group;
+  //   }
 
-    return this.studentsService.update(Number(id), udpateDto);
-  }
+  //   return this.studentsService.update(Number(id), udpateDto);
+  // }
 
   @Delete(':id')
   @RequiredUserRoles(UserRole.Admin)
   async remove(@Param('id') id: string) {
-    return this.studentsService.remove(Number(id));
+    await this.studentsService.remove(Number(id));
+
+    return { message: 'Deleted' };
   }
 }

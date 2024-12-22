@@ -9,6 +9,7 @@ import {
   BadRequestException,
   UseGuards,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -50,7 +51,7 @@ export class CurrentDisciplinesController {
   })
   async create(
     @Body() createCurrentDisciplineInputDto: CreateCurrentDisciplineInputDto,
-  ): Promise<CurrentDiscipline> {
+  ) {
     const discipline = await this.disciplinesService.findById(
       createCurrentDisciplineInputDto.disciplineId,
     );
@@ -86,11 +87,32 @@ export class CurrentDisciplinesController {
     description: 'All current disciplines',
     type: Array<CurrentDiscipline>,
   })
-  findAll() {
-    return this.currentDisciplinesService.findAll({
-      discipline: true,
+  async findAll() {
+    const currentDisciplines = await this.currentDisciplinesService.findAll({
       group: true,
     });
+
+    const disciplines = await this.disciplinesService.findAll();
+
+    const resolvedCurrentDisciplines = [];
+    for await (const currentDiscipline of currentDisciplines) {
+      const correspondingDescipline = disciplines.find(
+        (discipline) => discipline.id === currentDiscipline.disciplineId,
+      );
+
+      if (!correspondingDescipline) {
+        throw new BadRequestException(
+          `Current discipline with id (${currentDiscipline.id}) does not have discipline stored. Discipline id (${currentDiscipline.disciplineId})`,
+        );
+      }
+
+      resolvedCurrentDisciplines.push({
+        ...currentDiscipline,
+        discipline: correspondingDescipline,
+      });
+    }
+
+    return resolvedCurrentDisciplines;
   }
 
   @Get('/disciplines/:disciplineId')
@@ -101,14 +123,15 @@ export class CurrentDisciplinesController {
     description: 'All current disciplines for discipline with specified id',
     type: Array<CurrentDiscipline>,
   })
-  findByDisciplineId(
+  async findByDisciplineId(
     @Param('disciplineId') id: string,
     @Query('year') year?: string,
   ) {
     if (year) {
-      return this.currentDisciplinesService.find(
+      const resolvedCurrentDisciplines = [];
+      const currentDisciplines = await this.currentDisciplinesService.find(
         {
-          discipline: { id: Number(id) },
+          disciplineId: Number(id),
           year: Number(year),
         },
         {
@@ -118,11 +141,30 @@ export class CurrentDisciplinesController {
           },
         },
       );
+
+      for await (const currentDiscipline of currentDisciplines) {
+        const correspondingDescipline = await this.disciplinesService.findById(
+          currentDiscipline.disciplineId,
+        );
+
+        if (!correspondingDescipline) {
+          throw new BadRequestException(
+            `Current discipline with id (${currentDiscipline.id}) does not have discipline stored. Discipline id (${currentDiscipline.disciplineId})`,
+          );
+        }
+
+        resolvedCurrentDisciplines.push({
+          ...currentDiscipline,
+          discipline: correspondingDescipline,
+        });
+      }
+
+      return resolvedCurrentDisciplines;
     }
 
-    return this.currentDisciplinesService.find(
+    const currentDisciplines = await this.currentDisciplinesService.find(
       {
-        discipline: { id: Number(id) },
+        disciplineId: Number(id),
       },
       {
         group: true,
@@ -131,6 +173,26 @@ export class CurrentDisciplinesController {
         },
       },
     );
+
+    const resolvedCurrentDisciplines = [];
+    for await (const currentDiscipline of currentDisciplines) {
+      const correspondingDescipline = await this.disciplinesService.findById(
+        currentDiscipline.disciplineId,
+      );
+
+      if (!correspondingDescipline) {
+        throw new BadRequestException(
+          `Current discipline with id (${currentDiscipline.id}) does not have discipline stored. Discipline id (${currentDiscipline.disciplineId})`,
+        );
+      }
+
+      resolvedCurrentDisciplines.push({
+        ...currentDiscipline,
+        discipline: correspondingDescipline,
+      });
+    }
+
+    return resolvedCurrentDisciplines;
   }
 
   @Get(':id')
@@ -141,12 +203,24 @@ export class CurrentDisciplinesController {
     description: 'Find current discipline by id',
     type: CurrentDiscipline,
   })
-  findOne(@Param('id') id: string) {
-    return this.currentDisciplinesService.findById(Number(id), {
-      discipline: true,
-      group: true,
-      tasks: true,
-    });
+  async findOne(@Param('id') id: string) {
+    const currentDiscipline = await this.currentDisciplinesService.findById(
+      Number(id),
+      {
+        group: true,
+        tasks: true,
+      },
+    );
+
+    if (!currentDiscipline) {
+      throw new NotFoundException();
+    }
+
+    const correspondingDescipline = await this.disciplinesService.findById(
+      currentDiscipline.disciplineId,
+    );
+
+    return { ...currentDiscipline, discipline: correspondingDescipline };
   }
 
   @Patch(':id')
@@ -155,11 +229,11 @@ export class CurrentDisciplinesController {
     @Param('id') id: string,
     @Body() updateCurrentDisciplineInputDto: UpdateCurrentDisciplineInputDto,
   ) {
-    const { disciplineId, groupId, ...updateStudentInputDtoRest } =
+    const { disciplineId, groupId, ...updateCurrentDisciplineInputDtoRest } =
       updateCurrentDisciplineInputDto;
 
     const updateDto: DeepPartial<CurrentDiscipline> = {
-      ...updateStudentInputDtoRest,
+      ...updateCurrentDisciplineInputDtoRest,
     };
 
     if (disciplineId) {
@@ -171,7 +245,7 @@ export class CurrentDisciplinesController {
         );
       }
 
-      updateDto.discipline = discipline;
+      updateDto.disciplineId = discipline.id;
     }
 
     if (groupId) {

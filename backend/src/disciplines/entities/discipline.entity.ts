@@ -30,9 +30,15 @@ export class Discipline {
   })
   controlForm: DisciplineControlForm;
 
-  @OneToMany(
-    () => CurrentDiscipline,
-    (currentDiscipline) => currentDiscipline.discipline,
-  )
-  currentDisciplines: Array<CurrentDiscipline>;
+  // @OneToMany(
+  //   () => CurrentDiscipline,
+  //   (currentDiscipline) => currentDiscipline.discipline,
+  // )
+  // currentDisciplines: Array<CurrentDiscipline>;
+}
+
+export interface GetDisciplineResponseData {
+  id: number;
+  name: string;
+  controlForm: DisciplineControlForm;
 }

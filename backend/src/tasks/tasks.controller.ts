@@ -29,6 +29,7 @@ import { TeachersService } from 'src/teachers/teachers.service';
 import { TaskEvaluationScale } from 'src/common/contracts/enums/task-evaluation-scale.enum';
 import { UpdateTaskInputDto } from './dto/update-tasks.dto';
 import { DeepPartial } from 'typeorm';
+import { DisciplinesService } from 'src/disciplines/disciplines.service';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -40,6 +41,7 @@ export class TasksController {
     private readonly tasksService: TasksService,
     private readonly currentDisciplinesService: CurrentDisciplinesService,
     private readonly teachersService: TeachersService,
+    private readonly disciplinesService: DisciplinesService,
   ) {}
 
   @Post()
@@ -58,7 +60,6 @@ export class TasksController {
 
     const currentDiscipline = await this.currentDisciplinesService.findById(
       createTaskInputDto.currentDisciplineId,
-      { discipline: true },
     );
 
     if (!currentDiscipline) {
@@ -66,6 +67,21 @@ export class TasksController {
         `Current task with id (${createTaskInputDto.currentDisciplineId}) does not exist`,
       );
     }
+
+    const correspondingDescipline = await this.disciplinesService.findById(
+      currentDiscipline.disciplineId,
+    );
+
+    if (!correspondingDescipline) {
+      throw new BadRequestException(
+        `Current discipline with id (${currentDiscipline.id}) does not have discipline stored. Discipline id (${currentDiscipline.disciplineId})`,
+      );
+    }
+
+    const resolvedCurrentDiscipline = {
+      ...currentDiscipline,
+      discipline: correspondingDescipline,
+    };
 
     const teacher = await this.teachersService.findByUserId(Number(user?.sub));
 
@@ -76,7 +92,7 @@ export class TasksController {
     }
 
     let evaluationScale: TaskEvaluationScale = TaskEvaluationScale.TenPoint;
-    switch (currentDiscipline.discipline.controlForm) {
+    switch (resolvedCurrentDiscipline.discipline.controlForm) {
       case DisciplineControlForm.Exam:
       case DisciplineControlForm.DifferentiatedCredit: {
         evaluationScale = TaskEvaluationScale.TenPoint;

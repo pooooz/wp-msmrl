@@ -5,7 +5,10 @@ import { Repository } from 'typeorm';
 import { Result } from './entities/result.entity';
 import { CreateResultInputDto } from './dto/create-result.dto';
 import { Task } from 'src/tasks/entities/tasks.entity';
-import { Student } from 'src/students/entities/student.entity';
+import {
+  GetStudentResponseData,
+  Student,
+} from 'src/students/entities/student.entity';
 import { BaseTypeORMService } from 'src/common/services/base-typeorm.service';
 
 @Injectable()
@@ -19,12 +22,12 @@ export class ResultsService extends BaseTypeORMService<Result> {
 
   async create(
     createResultInputDto: CreateResultInputDto,
-    student: Student,
+    student: GetStudentResponseData,
     task: Task,
   ) {
     const result = this.resultRepository.create({
       ...createResultInputDto,
-      student,
+      studentId: createResultInputDto.studentId,
       task,
     });
 

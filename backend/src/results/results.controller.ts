@@ -8,6 +8,7 @@ import {
   Delete,
   BadRequestException,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -26,6 +27,7 @@ import { StudentsService } from 'src/students/students.service';
 import { TasksService } from 'src/tasks/tasks.service';
 import { UpdateResultInputDto } from './dto/update-result.dto';
 import { DeepPartial } from 'typeorm';
+import { DisciplinesService } from 'src/disciplines/disciplines.service';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -36,6 +38,7 @@ export class ResultsController {
     private readonly resultsService: ResultsService,
     private readonly studentsService: StudentsService,
     private readonly tasksService: TasksService,
+    private readonly disciplinesService: DisciplinesService,
   ) {}
 
   @Post()
@@ -78,8 +81,21 @@ export class ResultsController {
     description: 'All results',
     type: Array<Result>,
   })
-  findAll() {
-    return this.resultsService.findAll({ student: true, task: true });
+  async findAll() {
+    const results = await this.resultsService.findAll({
+      task: true,
+    });
+
+    const resolvedResults = [];
+    for await (const result of results) {
+      const correspondingStudent = this.studentsService.findById(
+        result.studentId,
+      );
+
+      resolvedResults.push({ ...result, student: correspondingStudent });
+    }
+
+    return resolvedResults;
   }
 
   @Get(':id')
@@ -90,11 +106,20 @@ export class ResultsController {
     description: 'Find result by id',
     type: Result,
   })
-  findOne(@Param('id') id: string) {
-    return this.resultsService.findById(Number(id), {
-      student: true,
+  async findOne(@Param('id') id: string) {
+    const result = await this.resultsService.findById(Number(id), {
       task: true,
     });
+
+    if (!result) {
+      throw new NotFoundException('Result with this id does not exists');
+    }
+
+    const correspondingStudent = await this.studentsService.findById(
+      result.studentId,
+    );
+
+    return { ...result, student: correspondingStudent };
   }
 
   @Get('/tasks/:taskId')
@@ -105,11 +130,21 @@ export class ResultsController {
     description: 'Find results by task id',
     type: Array<Result>,
   })
-  findByTaskId(@Param('taskId') taskId: string) {
-    return this.resultsService.find(
-      { task: { id: Number(taskId) } },
-      { student: true },
-    );
+  async findByTaskId(@Param('taskId') taskId: string) {
+    const results = await this.resultsService.find({
+      task: { id: Number(taskId) },
+    });
+
+    const resolvedResults = [];
+    for await (const result of results) {
+      const correspondingStudent = await this.studentsService.findById(
+        result.studentId,
+      );
+
+      resolvedResults.push({ ...result, student: correspondingStudent });
+    }
+
+    return resolvedResults;
   }
 
   @Get('/students/:studentId')
@@ -120,17 +155,41 @@ export class ResultsController {
     description: 'Find results by student id',
     type: Array<Result>,
   })
-  findByStudentId(@Param('studentId') studentId: string) {
-    return this.resultsService.find(
-      { student: { id: Number(studentId) } },
+  async findByStudentId(@Param('studentId') studentId: string) {
+    const results = await this.resultsService.find(
+      { studentId: Number(studentId) },
       {
         task: {
-          currentDiscipline: {
-            discipline: true,
-          },
+          currentDiscipline: true,
         },
       },
     );
+
+    const resolvedTasks = [];
+    for await (const result of results) {
+      const correspondingDescipline = await this.disciplinesService.findById(
+        result.task.currentDiscipline.disciplineId,
+      );
+
+      if (!correspondingDescipline) {
+        throw new BadRequestException(
+          `Current discipline with id (${result.task.currentDiscipline.id}) does not have discipline stored. Discipline id (${result.task.currentDiscipline.disciplineId})`,
+        );
+      }
+
+      resolvedTasks.push({
+        ...result,
+        task: {
+          ...result.task,
+          currentDiscipline: {
+            ...result.task.currentDiscipline,
+            discipline: correspondingDescipline,
+          },
+        },
+      });
+    }
+
+    return resolvedTasks;
   }
 
   @Patch(':id')
@@ -155,7 +214,7 @@ export class ResultsController {
         );
       }
 
-      updateDto.student = student;
+      updateDto.studentId = student.id;
     }
 
     if (taskId) {

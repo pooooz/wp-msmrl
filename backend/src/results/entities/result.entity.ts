@@ -18,8 +18,8 @@ export class Result {
   })
   id: number;
 
-  @ManyToOne(() => Student, (student) => student.results)
-  student: Student;
+  @Column()
+  studentId: number;
 
   @ManyToOne(() => Task, (task) => task.results)
   task: Task;

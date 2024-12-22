@@ -26,6 +26,7 @@ import { CurrentDisciplinesService } from 'src/current-disciplines/current-disci
 import { TeachersService } from 'src/teachers/teachers.service';
 import { UpdateDisciplineTeacherInputDto } from './dto/update-discipline-teacher.dto';
 import { DeepPartial } from 'typeorm';
+import { DisciplinesService } from 'src/disciplines/disciplines.service';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -37,6 +38,7 @@ export class DisciplineTeachersController {
     private readonly disciplineTeachersService: DisciplineTeachersService,
     private readonly currentDisciplinesService: CurrentDisciplinesService,
     private readonly teachersService: TeachersService,
+    private readonly disciplinesService: DisciplinesService,
   ) {}
 
   @Post()
@@ -131,18 +133,41 @@ export class DisciplineTeachersController {
     type: DisciplineTeacher,
   })
   async findByTeacherId(@Param('teacherId') teacherId: string) {
-    return this.disciplineTeachersService.find(
+    const disciplineTeachers = await this.disciplineTeachersService.find(
       {
         teacher: { id: Number(teacherId) },
       },
       {
         currentDiscipline: {
-          discipline: true,
+          // discipline: true,
           group: true,
         },
         teacher: true,
       },
     );
+
+    const resolvedDisciplineTeachers = [];
+    for await (const disciplineTeacher of disciplineTeachers) {
+      const correspondingDescipline = await this.disciplinesService.findById(
+        disciplineTeacher.currentDiscipline.disciplineId,
+      );
+
+      if (!correspondingDescipline) {
+        throw new BadRequestException(
+          `Current discipline with id (${disciplineTeacher.currentDiscipline.id}) does not have discipline stored. Discipline id (${disciplineTeacher.currentDiscipline.disciplineId})`,
+        );
+      }
+
+      resolvedDisciplineTeachers.push({
+        ...disciplineTeacher,
+        currentDiscipline: {
+          ...disciplineTeacher.currentDiscipline,
+          discipline: correspondingDescipline,
+        },
+      });
+    }
+
+    return resolvedDisciplineTeachers;
   }
 
   @Get('/currentDisciplines/:currentDisciplineId')

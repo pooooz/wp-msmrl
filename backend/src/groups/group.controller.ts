@@ -25,9 +25,9 @@ import { CreateGroupInputDto } from './dto/create-group.dto';
 import { UpdateGroupInputDto } from './dto/update-group.dto';
 import { SpecializationsService } from 'src/specializations/specializations.service';
 import { DeepPartial } from 'typeorm';
+import { PublicRoute } from 'src/common/decorators/public-route.decorator';
 
 @ApiBearerAuth()
-@UseGuards(UserRoleGuard)
 @ApiTags('groups')
 @Controller('groups')
 export class GroupsController {
@@ -37,13 +37,13 @@ export class GroupsController {
   ) {}
 
   @Post()
-  @RequiredUserRoles(UserRole.Admin)
   @ApiOperation({ summary: 'Create group' })
   @ApiResponse({
     status: 201,
     description: 'Group created',
     type: Group,
   })
+  @PublicRoute()
   async create(
     @Body() createGroupInputDto: CreateGroupInputDto,
   ): Promise<Group> {
@@ -61,25 +61,25 @@ export class GroupsController {
   }
 
   @Get()
-  @RequiredUserRoles(UserRole.Admin, UserRole.Teacher)
   @ApiOperation({ summary: 'Find all groups' })
   @ApiResponse({
     status: 200,
     description: 'All groups',
     type: Array<Group>,
   })
+  @PublicRoute()
   findAll() {
     return this.groupsService.findAll({ specialization: true });
   }
 
   @Get(':id')
-  @RequiredUserRoles(UserRole.Admin, UserRole.Teacher)
   @ApiOperation({ summary: 'Find group' })
   @ApiResponse({
     status: 200,
     description: 'Find group by id',
     type: Group,
   })
+  @PublicRoute()
   findOne(@Param('id') id: string) {
     return this.groupsService.findById(Number(id), {
       specialization: true,
@@ -88,7 +88,7 @@ export class GroupsController {
   }
 
   @Patch(':id')
-  @RequiredUserRoles(UserRole.Admin)
+  @PublicRoute()
   async update(
     @Param('id') id: string,
     @Body() updateGroupInputDto: UpdateGroupInputDto,
@@ -115,7 +115,7 @@ export class GroupsController {
   }
 
   @Delete(':id')
-  @RequiredUserRoles(UserRole.Admin)
+  @PublicRoute()
   async remove(@Param('id') id: string) {
     return this.groupsService.remove(Number(id));
   }

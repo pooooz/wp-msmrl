@@ -15,4 +15,5 @@ export default () => ({
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DATABASE,
   },
+  serviceUrl: process.env.SERVICE_URL,
 });

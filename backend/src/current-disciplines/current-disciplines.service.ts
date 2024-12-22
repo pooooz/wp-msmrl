@@ -5,7 +5,10 @@ import { Repository } from 'typeorm';
 import { CurrentDiscipline } from './entities/current-discipline.entity';
 import { CreateCurrentDisciplineInputDto } from './dto/create-current-discipline.dto';
 import { Group } from 'src/groups/entities/group.entity';
-import { Discipline } from 'src/disciplines/entities/discipline.entity';
+import {
+  Discipline,
+  GetDisciplineResponseData,
+} from 'src/disciplines/entities/discipline.entity';
 import { BaseTypeORMService } from 'src/common/services/base-typeorm.service';
 
 @Injectable()
@@ -19,13 +22,13 @@ export class CurrentDisciplinesService extends BaseTypeORMService<CurrentDiscipl
 
   async create(
     createCurrentDisciplineInputDto: CreateCurrentDisciplineInputDto,
-    discipline: Discipline,
+    discipline: GetDisciplineResponseData,
     group: Group,
   ) {
     const currentDiscipline = await this.currentDisciplineRepository.create({
       group,
-      discipline,
       year: createCurrentDisciplineInputDto.year,
+      disciplineId: createCurrentDisciplineInputDto.disciplineId,
     });
 
     return await this.currentDisciplineRepository.save(currentDiscipline);

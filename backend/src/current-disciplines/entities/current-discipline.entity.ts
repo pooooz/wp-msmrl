@@ -21,8 +21,8 @@ export class CurrentDiscipline {
   })
   id: number;
 
-  @ManyToOne(() => Discipline, (discipline) => discipline.currentDisciplines)
-  discipline: Discipline;
+  @Column()
+  disciplineId: number;
 
   @ManyToOne(() => Group, (group) => group.currentDisciplines)
   group: Group;
