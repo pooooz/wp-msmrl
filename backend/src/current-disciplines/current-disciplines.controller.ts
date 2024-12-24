@@ -27,7 +27,7 @@ import { CreateCurrentDisciplineInputDto } from './dto/create-current-discipline
 import { UpdateCurrentDisciplineInputDto } from './dto/update-current-discipline.dto';
 import { DisciplinesService } from 'src/disciplines/disciplines.service';
 import { GroupsService } from 'src/groups/group.service';
-import { DeepPartial } from 'typeorm';
+import { DataSource, DeepPartial } from 'typeorm';
 
 @ApiBearerAuth()
 @UseGuards(UserRoleGuard)
@@ -39,6 +39,7 @@ export class CurrentDisciplinesController {
     private readonly currentDisciplinesService: CurrentDisciplinesService,
     private readonly disciplinesService: DisciplinesService,
     private readonly groupsService: GroupsService,
+    private readonly dataSource: DataSource,
   ) {}
 
   @Post()
@@ -52,31 +53,45 @@ export class CurrentDisciplinesController {
   async create(
     @Body() createCurrentDisciplineInputDto: CreateCurrentDisciplineInputDto,
   ) {
-    const discipline = await this.disciplinesService.findById(
-      createCurrentDisciplineInputDto.disciplineId,
-    );
+    const queryRunner = this.dataSource.createQueryRunner();
 
-    if (!discipline) {
-      throw new BadRequestException(
-        `Discipline with this id (${createCurrentDisciplineInputDto.disciplineId}) does not exist`,
+    try {
+      await queryRunner.startTransaction();
+
+      const discipline = await this.disciplinesService.findById(
+        createCurrentDisciplineInputDto.disciplineId,
       );
-    }
 
-    const group = await this.groupsService.findById(
-      createCurrentDisciplineInputDto.groupId,
-    );
+      if (!discipline) {
+        throw new BadRequestException(
+          `Discipline with this id (${createCurrentDisciplineInputDto.disciplineId}) does not exist`,
+        );
+      }
 
-    if (!group) {
-      throw new BadRequestException(
-        `Group with this id (${createCurrentDisciplineInputDto.groupId}) does not exist`,
+      const group = await this.groupsService.findById(
+        createCurrentDisciplineInputDto.groupId,
       );
-    }
 
-    return this.currentDisciplinesService.create(
-      createCurrentDisciplineInputDto,
-      discipline,
-      group,
-    );
+      if (!group) {
+        throw new BadRequestException(
+          `Group with this id (${createCurrentDisciplineInputDto.groupId}) does not exist`,
+        );
+      }
+
+      const result = this.currentDisciplinesService.create(
+        createCurrentDisciplineInputDto,
+        discipline,
+        group,
+      );
+
+      await queryRunner.commitTransaction();
+
+      return result;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   @Get()
